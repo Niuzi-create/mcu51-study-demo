@@ -1,0 +1,23 @@
+# 编辑器、运行缓存和私人学习资料
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+__pycache__/
+*.py[cod]
+*.log
+*.bak
+*.zip
+*.pdf
+*.doc
+*.docx
+*.sqlite3
+*.db
+*.csv
+*.env
+.env*
+/data/
+/私人资料/
+/作业资料/
+/课件/
+/results*/
