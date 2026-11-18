@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#f4f7fb">
-<title>51单片机自主复习 · 公开演示版</title>
+<title>51单片机 · 考试复习站（第一章与答题模板增强版）</title>
 <style>
 :root{--bg:#f4f7fb;--panel:#fff;--ink:#17243b;--muted:#68778e;--line:#e4eaf2;--blue:#315ee8;--blue2:#eaf0ff;--green:#16845b;--greenbg:#e8f7f0;--red:#c54c4c;--redbg:#fff0f0;--amber:#a96813;--amberbg:#fff5e5;--shadow:0 10px 28px rgba(28,48,82,.07);--radius:18px}
 *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.65 "Microsoft YaHei","PingFang SC",system-ui,sans-serif}
@@ -32,7 +32,7 @@ button,input,select{font:inherit}button{cursor:pointer}.shell{max-width:1440px;m
 <body>
 <div class="shell">
   <header class="topbar">
-    <div class="brand"><div class="logo">51</div><div><h1>51单片机自主复习 · 互动学习</h1><p>公开版：仅包含原创演示题与交互架构</p></div></div>
+    <div class="brand"><div class="logo">51</div><div><h1>考试复习站 · 互动学习</h1><p>面向答题与编程题的考前速练工具</p></div></div>
     <div class="top-actions">
       <select id="subjectSelect" class="select" aria-label="选择科目"><option value="51">51单片机 / 微机原理</option></select>
       <button class="btn secondary small" id="addSubjectBtn">＋ 添加科目</button>
@@ -41,7 +41,7 @@ button,input,select{font:inherit}button{cursor:pointer}.shell{max-width:1440px;m
   </header>
 
   <section class="hero">
-    <div><h2>练习、反馈，再有针对性地复习</h2><p>以示例题展示分步提示、错题本、学习记录与规则化复习建议。数据只保存在当前浏览器。</p><div class="hero-note">公开演示版：原课程作业、课件内容与个人记录均未收录</div></div>
+    <div><h2>把老师作业，练成考场上的标准答案</h2><p>按作业题型组织知识点，先看结论，再练关键步骤，最后核对完整推导与程序框架。错题、掌握情况和练习记录保存在当前浏览器。</p><div class="hero-note">资料范围：第一章基础知识 · 作业 1–5 · 第 2–8、10 章课件 · 编程答题模板</div></div>
     <div class="hero-mark">MCU</div>
   </section>
 
@@ -56,6 +56,8 @@ button,input,select{font:inherit}button{cursor:pointer}.shell{max-width:1440px;m
     <button class="active" data-view="bank">学习题库</button>
     <button data-view="wrong">错题本 <span id="wrongNavCount"></span></button>
     <button data-view="progress">进度统计</button>
+    <button data-view="reference">速查手册</button>
+    <button data-view="templates">答题模板</button>
   </nav>
 
   <section class="view active" id="view-bank">
@@ -65,10 +67,10 @@ button,input,select{font:inherit}button{cursor:pointer}.shell{max-width:1440px;m
         <div class="category-list" id="categoryList"></div>
         <div class="question-list" id="questionList"></div>
         <label class="filter-label" for="searchInput">搜索题目 / 关键词</label>
-        <input class="search" id="searchInput" placeholder="例如：P1、12T、位运算">
-        <span class="filter-label">按示例组筛选</span>
+        <input class="search" id="searchInput" placeholder="例如：TH1、IE、ADC0809">
+        <span class="filter-label">按作业来源筛选</span>
         <div class="filter-row" id="homeworkFilters"></div>
-        <div class="notice">公开版保留交互功能，内容仅为原创演示；实际学习请核对权威资料。</div>
+        <div class="notice">考试策略：简答题先写定义和关键特征；计算题写公式、代入、结果；编程题按初始化、主程序、中断/子程序分段写。</div>
       </aside>
 
       <main class="maincard">
@@ -96,124 +98,412 @@ button,input,select{font:inherit}button{cursor:pointer}.shell{max-width:1440px;m
     <div class="grid2">
       <div class="panel"><h3>总体学习情况</h3><div class="stats-strip" style="grid-template-columns:repeat(2,1fr);margin:12px 0 0">
         <div class="stat"><div class="label">累计练习次数</div><div class="value" id="pAttempts">0</div></div>
-        <div class="stat"><div class="label">掌握标记次数</div><div class="value" id="pCorrect">0</div></div>
-        <div class="stat"><div class="label">掌握标记率</div><div class="value" id="pAccuracy">0%</div></div>
+        <div class="stat"><div class="label">答对次数</div><div class="value" id="pCorrect">0</div></div>
+        <div class="stat"><div class="label">正确率</div><div class="value" id="pAccuracy">0%</div></div>
         <div class="stat"><div class="label">题目覆盖率</div><div class="value" id="pCoverage">0%</div></div>
       </div></div>
-      <div class="panel"><h3>学习建议</h3><p class="muted" id="studyAdvice" style="margin:10px 0 0">开始练习后，这里会根据记录给出复习建议。</p><div class="notice">掌握标记率依据用户主动标记计算，并非自动判卷结果。</div></div>
+      <div class="panel"><h3>学习建议</h3><p class="muted" id="studyAdvice" style="margin:10px 0 0">开始练习后，这里会根据记录给出复习建议。</p><div class="notice">“已做题数”按不同题目去重；“正确率”按每次练习记录统计，因此重复练习会影响正确率。</div></div>
     </div>
-    <div class="panel"><div class="panel-head"><h3>各知识点掌握标记率</h3><span class="tiny muted">掌握标记次数 ÷ 练习次数</span></div><div id="categoryProgress"></div></div>
+    <div class="panel"><div class="panel-head"><h3>各知识点正确率</h3><span class="tiny muted">正确次数 ÷ 练习次数</span></div><div id="categoryProgress"></div></div>
     <div class="panel"><div class="panel-head"><h3>掌握清单</h3><span class="tiny muted" id="masteredCountLabel"></span></div><div id="masteredList"></div></div>
   </section>
 
-  <div class="footer">公开演示版 · 仅保留交互架构与原创示例题 · 学习记录仅保存在当前浏览器</div>
+  <section class="view" id="view-reference">
+    <div class="panel"><div class="panel-head"><h3>常用公式速查</h3><span class="tag blue">经典 12T 80C51</span></div><div class="formula-grid">
+      <div class="formula"><h4>机器周期</h4><div class="mathline">Tcy = 12 / fosc</div><p>fosc 用 Hz；12MHz 时 Tcy=1μs，6MHz 时 Tcy=2μs。</p></div>
+      <div class="formula"><h4>定时器计数次数</h4><div class="mathline">N = 2ⁿ − x</div><p>n 为计数器位数，x 为初值；定时时间 T=N×Tcy。</p></div>
+      <div class="formula"><h4>方式 0 初值</h4><div class="mathline">x = 8192 − T/Tcy</div><p>13 位；TH0 与 TL0 低 5 位共同组成计数初值。</p></div>
+      <div class="formula"><h4>方式 1 初值</h4><div class="mathline">x = 65536 − T/Tcy</div><p>16 位；TH0 为高 8 位，TL0 为低 8 位。</p></div>
+      <div class="formula"><h4>方式 2 初值</h4><div class="mathline">x = 256 − T/Tcy</div><p>8 位自动重装；TH0 保存重装值，TL0 计数。</p></div>
+      <div class="formula"><h4>串口方式 1 波特率</h4><div class="mathline">Baud = 2^SMOD × fosc / [12×32×(256−TH1)]</div><p>T1 通常工作在方式 2；SMOD=0 时不倍增。</p></div>
+      <div class="formula"><h4>帧速率与波特率</h4><div class="mathline">波特率 = 每帧位数 × 帧/秒</div><p>1 起始 + 8 数据 + 1 停止 = 10 bit/帧。</p></div>
+      <div class="formula"><h4>ADC 分辨率</h4><div class="mathline">Δ = VFS / 2ⁿ</div><p>n 为 ADC 位数；量化绝对误差通常按 ±½LSB 计算。</p></div>
+      <div class="formula"><h4>线性标度变换</h4><div class="mathline">Y = D × (Ymax−Ymin)/255 + Ymin</div><p>8 位 ADC；D 为转换结果。本题 0–800℃ 对应 0–5V。</p></div>
+    </div></div>
+
+    <div class="panel"><h3>定时范围与工作方式</h3><div class="table-wrap"><table><thead><tr><th>方式</th><th>计数位数</th><th>计数范围</th><th>最大定时时间（Tcy）</th><th>特点</th></tr></thead><tbody>
+      <tr><td>方式 0</td><td>13 位</td><td>1～8192</td><td>8192×Tcy</td><td>TLx 低 5 位 + THx 8 位</td></tr>
+      <tr><td>方式 1</td><td>16 位</td><td>1～65536</td><td>65536×Tcy</td><td>THx、TLx 组成 16 位计数器</td></tr>
+      <tr><td>方式 2</td><td>8 位</td><td>1～256</td><td>256×Tcy</td><td>TLx 溢出后自动从 THx 重装</td></tr>
+      <tr><td>方式 3</td><td>T0 拆为两个 8 位</td><td>—</td><td>—</td><td>仅适用于 T0；T1 停止计数</td></tr>
+    </tbody></table></div><div class="notice">6MHz 晶振（Tcy=2μs）：方式0/1/2 最大定时范围分别为 16384μs、131072μs、512μs。12MHz 晶振（Tcy=1μs）：分别为 8192μs、65536μs、256μs。</div></div>
+
+    <div class="panel"><h3>常用寄存器配置</h3><div class="table-wrap"><table><thead><tr><th>寄存器 / 位</th><th>作用</th><th>考试常见写法</th></tr></thead><tbody>
+      <tr><td>TMOD</td><td>选择定时器/计数器模式与工作方式</td><td><code>TMOD=0x02;</code>：T0 定时、方式2</td></tr>
+      <tr><td>TR0 / TR1</td><td>启动或停止 T0 / T1</td><td><code>TR0=1;</code></td></tr>
+      <tr><td>ET0 / ET1</td><td>允许 T0 / T1 中断</td><td><code>ET0=1;</code></td></tr>
+      <tr><td>EA</td><td>总中断允许</td><td><code>EA=1;</code></td></tr>
+      <tr><td>IT0 / IT1</td><td>外部中断触发方式：1 边沿，0 电平</td><td><code>IT1=1;</code></td></tr>
+      <tr><td>EX0 / EX1</td><td>允许外部中断 0 / 1</td><td><code>EX1=1;</code></td></tr>
+      <tr><td>IE / IP</td><td>中断允许 / 中断优先级</td><td>IE：EA、ES、ET1、EX1、ET0、EX0</td></tr>
+      <tr><td>SCON</td><td>串口工作方式与收发状态</td><td><code>SCON=0x40;</code> 方式1发送；<code>0x50</code> 方式1接收</td></tr>
+      <tr><td>TH1 / TL1</td><td>T1 初值；串口方式1常用作波特率发生器</td><td><code>TH1=TL1=0xFD;</code>（11.0592MHz、9600bps、SMOD=0）</td></tr>
+      <tr><td>TI / RI</td><td>发送完成 / 接收完成标志</td><td>查询后由软件清零</td></tr>
+      <tr><td>SBUF</td><td>串行数据缓冲器</td><td>写 SBUF 发送；读 SBUF 接收</td></tr>
+    </tbody></table></div></div>
+
+    <div class="panel"><h3>中断号与入口地址</h3><div class="table-wrap"><table><thead><tr><th>中断源</th><th>C51 中断号</th><th>入口地址</th><th>自然优先级</th></tr></thead><tbody>
+      <tr><td>外部中断 0</td><td>0</td><td>0003H</td><td>最高</td></tr><tr><td>T0 溢出</td><td>1</td><td>000BH</td><td>第二</td></tr><tr><td>外部中断 1</td><td>2</td><td>0013H</td><td>第三</td></tr><tr><td>T1 溢出</td><td>3</td><td>001BH</td><td>第四</td></tr><tr><td>串行口</td><td>4</td><td>0023H</td><td>最低</td></tr>
+    </tbody></table></div></div>
+    <div class="panel"><h3>数码管常用段码</h3><div class="grid2"><div><b>共阳极（0 点亮）</b><div class="codebox">0xC0, 0xF9, 0xA4, 0xB0, 0x99,\n0x92, 0x82, 0xF8, 0x80, 0x90</div></div><div><b>共阴极（1 点亮）</b><div class="codebox">0x3F, 0x06, 0x5B, 0x4F, 0x66,\n0x6D, 0x7D, 0x07, 0x7F, 0x6F</div></div></div><div class="notice">段码必须与数码管类型、硬件连线和位序一致。老师作业3使用共阳极段码；作业2脉冲计数显示程序使用共阴极段码。</div></div>
+
+<div class="panel">
+      <div class="panel-head"><div><h3>第一章 · 单片机基础知识速查</h3><div class="tiny muted">按第一章课件第7～39页整理；课件第40页以后为芯片产业与AI应用拓展内容。</div></div><span class="tag blue">第1章</span></div>
+      <div class="grid2">
+        <div class="formula"><h4>单片机定义</h4><p>在一块半导体芯片上集成微处理器、存储器、I/O接口、定时器/计数器和中断系统等功能部件，构成完整的微型计算机。</p></div>
+        <div class="formula"><h4>单片机与微型计算机</h4><p>单片机是微型计算机发展的重要分支，面向稳定可靠、小而廉、适应控制领域的应用。</p></div>
+        <div class="formula"><h4>常见系列</h4><p>MCS-51/8051、AVR、PIC、Motorola、MSP430、基于ARM核的32位单片机。</p></div>
+        <div class="formula"><h4>MCS-51 / 80C51</h4><p>Intel于1980年推出MCS-51；8051是典型型号。后续厂商推出与其指令系统兼容的产品，常称80C51系列。</p></div>
+      </div>
+      <h4 style="margin:18px 0 8px">数制标识和基本规则</h4>
+      <div class="table-wrap"><table><thead><tr><th>数制</th><th>数码</th><th>进位规则</th><th>标识符</th><th>位权</th></tr></thead><tbody>
+        <tr><td>二进制</td><td>0、1</td><td>逢二进一</td><td>B</td><td>2的整数次幂</td></tr>
+        <tr><td>十进制</td><td>0～9</td><td>逢十进一</td><td>D（可省略）</td><td>10的整数次幂</td></tr>
+        <tr><td>十六进制</td><td>0～9、A～F</td><td>逢十六进一</td><td>H</td><td>16的整数次幂</td></tr>
+      </tbody></table></div>
+      <div class="notice">数制的基：计数制中所具有的数码个数。数制的权：每一位所具有的值，即该位对应基数的幂。</div>
+    </div>
+    <div class="panel">
+      <div class="panel-head"><h3>数制转换交互练习器</h3><span class="tag">可直接试算</span></div>
+      <div class="grid2" style="align-items:end">
+        <div><label class="filter-label" for="baseInput">输入数值（支持小数）</label><input class="search" id="baseInput" value="19.625" placeholder="例如 19.625、10011.101、2FB5"></div>
+        <div><label class="filter-label" for="baseFrom">当前输入进制</label><select class="select" id="baseFrom" style="width:100%"><option value="10">十进制 D</option><option value="2">二进制 B</option><option value="16">十六进制 H</option></select></div>
+      </div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px"><button class="btn primary" id="convertBaseBtn">转换</button><button class="btn plain" id="exampleBaseBtn">载入课件示例 19.625</button></div>
+      <div id="baseResults" class="notice" style="margin-top:14px">输入数值后点击“转换”。</div>
+    </div>
+    <div class="panel">
+      <h3>第一章数制转换方法</h3>
+      <div class="grid2">
+        <div class="formula"><h4>二进制 / 十六进制 → 十进制</h4><div class="mathline">按权展开，再将各项相加</div><p>例如：0F3DH = 15×16² + 3×16 + 13 = 3901。</p></div>
+        <div class="formula"><h4>十进制 → 二进制</h4><div class="mathline">整数：除2取余、倒序；小数：乘2取整、正序</div><p>例如：19.625D = 10011.101B。</p></div>
+        <div class="formula"><h4>二进制 → 十六进制</h4><div class="mathline">以小数点为界，每4位分组，不足补0</div><p>课件示例：1111000111.100101B = 3C7.94H。</p></div>
+        <div class="formula"><h4>十六进制 → 二进制</h4><div class="mathline">每一位十六进制数替换为4位二进制</div><p>例如：2FB5H = 0010 1111 1011 0101B。</p></div>
+      </div>
+    </div>
+  </section>
+
+
+
+
+  <section class="view" id="view-templates">
+    <div class="panel">
+      <div class="panel-head"><div><h3>考场答题总模板</h3><div class="tiny muted">先判断题型，再按固定结构组织答案，减少漏步骤。</div></div><span class="tag blue">建议背熟</span></div>
+      <div class="grid2">
+        <div class="formula"><h4>① 简答题模板</h4><div class="mathline">定义 → 组成/分类 → 作用/特点 → 总结</div><p>先用一句话回答“是什么”，再分点列出关键词和功能。每点尽量独立成句，避免只写名词。</p><pre class="codebox" id="ans-short">答：……是指……
+（1）……，其作用是……
+（2）……，其特点是……
+（3）……
+因此，……</pre><button class="btn secondary small" data-copy-template="ans-short">复制简答题模板</button></div>
+        <div class="formula"><h4>② 计算题模板</h4><div class="mathline">已知 → 求 → 公式 → 代入 → 结果</div><p>先统一单位，再写公式和代入过程，最后标明单位；进制转换要写出展开式、余数或分组过程。</p><pre class="codebox" id="ans-calc">已知：……
+求：……
+解：
+（1）采用……公式/方法：
+    ……
+（2）代入已知数据：
+    ……
+（3）计算得：
+    …… = ……
+答：……（单位）</pre><button class="btn secondary small" data-copy-template="ans-calc">复制计算题模板</button></div>
+        <div class="formula"><h4>③ 编程题模板</h4><div class="mathline">分析 → 定义 → 初始化 → 主循环 → 中断/子程序</div><p>先写头文件和变量，再写初始化；主程序只负责循环控制，中断服务函数单独写在主函数外。</p><pre class="codebox" id="ans-code">① 题目分析：确定输入、输出和控制方式。
+② 变量/数组：定义计数变量、状态变量或查表数组。
+③ 初始化：配置端口、工作方式、初值和允许位。
+④ main：调用初始化，进入 while(1)。
+⑤ ISR/子程序：完成中断处理或重复功能。</pre><button class="btn secondary small" data-copy-template="ans-code">复制编程题答题顺序</button></div>
+        <div class="formula"><h4>④ 判断编程题用什么方法</h4><div class="mathline">循环 / 数组 / 中断 / 定时器 / 查询</div><p>普通控制用循环；规律输出用数组；外部事件用中断；周期控制用定时器；串口发送查询 TI；ADC 按接口电路读取。</p><pre class="codebox" id="ans-method">LED流水灯：循环 + 位移
+数码管：段码数组 + 查表
+外部脉冲/按键计数：外部中断
+固定时间间隔：定时器中断
+PWM：定时中断 + 软件计数
+步进电机：定时器 + 相序数组
+串口发送：T1产生波特率 + 查询TI
+ADC0809：按接口电路启动、读取和换算</pre><button class="btn secondary small" data-copy-template="ans-method">复制题型判断表</button></div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-head"><div><h3>八种常考编程模板</h3><div class="tiny muted">内容按你整理的《51单片机考试编程思路与答题模板》归入网站，点击标题展开，支持复制代码。</div></div><span class="tag">C51 / Keil</span></div>
+
+      <details class="template-detail" open>
+        <summary>模板1：LED 流水灯（左移 / 右移）</summary>
+        <p class="muted tiny">左移初值 0x01；右移初值 0x80。LED 亮灭取决于电路有效电平。</p>
+        <div class="grid2">
+          <div><b>左移：P1.0 → P1.7</b><pre class="codebox" id="tpl-led-left">led = 0x01;
+for(i=0; i&lt;8; i++)
+{
+    P1 = led;
+    delay_ms(100);
+    led &lt;&lt;= 1;
+}</pre><button class="btn secondary small" data-copy-template="tpl-led-left">复制左移代码</button></div>
+          <div><b>右移：P1.7 → P1.0</b><pre class="codebox" id="tpl-led-right">led = 0x80;
+for(i=0; i&lt;8; i++)
+{
+    P1 = led;
+    delay_ms(100);
+    led &gt;&gt;= 1;
+}</pre><button class="btn secondary small" data-copy-template="tpl-led-right">复制右移代码</button></div>
+        </div>
+      </details>
+
+      <details class="template-detail">
+        <summary>模板2：数码管 0～9 循环显示（共阳极）</summary>
+        <p class="muted tiny">段码数组与老师作业中的共阳极段码一致；共阴极不能直接使用这一组段码。</p>
+        <pre class="codebox" id="tpl-seg">uchar code DSY_CODE[10] =
+{
+    0xC0,0xF9,0xA4,0xB0,0x99,
+    0x92,0x82,0xF8,0x80,0x90
+};
+
+void main(void)
+{
+    uchar i=0;
+    while(1)
+    {
+        P2=DSY_CODE[i];
+        i=(i+1)%10;
+        Delay();
+    }
+}</pre><button class="btn secondary small" data-copy-template="tpl-seg">复制数码管模板</button>
+      </details>
+
+      <details class="template-detail">
+        <summary>模板3：外部中断 INT1 计数</summary>
+        <p class="muted tiny">INT1 下降沿触发；C51 中断号为 2。EA 与 EX1 均需开放。</p>
+        <pre class="codebox" id="tpl-int1">volatile unsigned int X=0;
+
+void init(void)
+{
+    IT1=1;       /* INT1下降沿触发 */
+    IE=0x84;     /* EA=1，EX1=1 */
+}
+
+void exter1_isr(void) interrupt 2
+{
+    X++;
+}
+
+void main(void)
+{
+    init();
+    while(1)
+    {
+        /* 显示或处理X */
+    }
+}</pre><button class="btn secondary small" data-copy-template="tpl-int1">复制 INT1 模板</button>
+      </details>
+
+      <details class="template-detail">
+        <summary>模板4：定时器 T0 初始化（12MHz、方式2、10μs）</summary>
+        <p class="muted tiny">答题顺序：工作方式 → 初值 → 允许中断 → 总中断 → 启动定时器。</p>
+        <pre class="codebox" id="tpl-timer">void init(void)
+{
+    TMOD=0x02;
+    TH0=0xF6;
+    TL0=0xF6;
+    ET0=1;
+    EA=1;
+    TR0=1;
+}
+
+void timer0_isr(void) interrupt 1
+{
+    /* 每次T0溢出后执行 */
+}</pre><button class="btn secondary small" data-copy-template="tpl-timer">复制定时器模板</button>
+      </details>
+
+      <details class="template-detail">
+        <summary>模板5：PWM 输出（周期10ms、占空比55%、每10μs中断）</summary>
+        <p class="muted tiny">总次数 N=10ms/10μs=1000；高电平次数 NH=1000×55%=550；低电平次数450。</p>
+        <pre class="codebox" id="tpl-pwm">unsigned int COUNTER=0;
+unsigned int PWMH=550;
+
+void init(void)
+{
+    TMOD=0x02;
+    TH0=0xF6;
+    TL0=0xF6;
+    ET0=1;
+    EA=1;
+    TR0=1;
+}
+
+void timer0_isr(void) interrupt 1
+{
+    COUNTER++;
+    COUNTER%=1000;
+
+    if(COUNTER&lt;PWMH)
+        P1_0=1;
+    else
+        P1_0=0;
+}</pre><button class="btn secondary small" data-copy-template="tpl-pwm">复制 PWM 模板</button>
+      </details>
+
+      <details class="template-detail">
+        <summary>模板6：四相八拍步进电机（每100ms换一拍）</summary>
+        <p class="muted tiny">每200μs中断一次，100ms/200μs=500次中断后更新一次相序；若每10ms换相，计数条件改为50。</p>
+        <pre class="codebox" id="tpl-stepper">unsigned char ndata[8]=
+{
+    0x08,0x0C,0x04,0x06,
+    0x02,0x03,0x01,0x09
+};
+unsigned int timer=0;
+unsigned char timer1=0;
+
+void init(void)
+{
+    TMOD=0x02;
+    TH0=0x38;
+    TL0=0x38;
+    P1=0x00;
+    ET0=1;
+    EA=1;
+    TR0=1;
+}
+
+void timer0_isr(void) interrupt 1
+{
+    timer++;
+    if(timer==500)
+    {
+        timer=0;
+        timer1++;
+    }
+    timer1%=8;
+    P1=ndata[timer1];
+}</pre><button class="btn secondary small" data-copy-template="tpl-stepper">复制步进电机模板</button>
+      </details>
+
+      <details class="template-detail">
+        <summary>模板7：串口查询方式发送（11.0592MHz、9600bps）</summary>
+        <p class="muted tiny">SCON=40H；T1方式2；TH1=TL1=FDH；写SBUF发送，查询TI，发送完成后软件清TI。</p>
+        <pre class="codebox" id="tpl-uart">uchar code DATA[10]=
+{
+    0x31,0x32,0x33,0x34,0x35,
+    0x36,0x37,0x38,0x39,0x30
+};
+
+void main(void)
+{
+    uchar i;
+    SCON=0x40;
+    TMOD=0x20;
+    TH1=0xFD;
+    TL1=0xFD;
+    TI=0;
+    TR1=1;
+
+    for(i=0;i&lt;10;i++)
+    {
+        SBUF=DATA[i];
+        while(TI==0);
+        TI=0;
+    }
+    while(1);
+}</pre><button class="btn secondary small" data-copy-template="tpl-uart">复制串口模板</button>
+      </details>
+
+      <details class="template-detail">
+        <summary>模板8：ADC0809 温度采集（XBYTE + INT0）</summary>
+        <p class="muted tiny">地址、启动转换方式必须按题目接口电路确定；换算式按0～255对应0～800℃。</p>
+        <pre class="codebox" id="tpl-adc">#include &lt;reg51.h&gt;
+#include &lt;absacc.h&gt;
+
+#define address 0x7FF8
+float temp;
+
+void Initial(void)
+{
+    IT0=1;
+    EA=1;
+    EX0=1;
+    XBYTE[address]=0;   /* 按题目电路启动转换 */
+}
+
+void ad_isr(void) interrupt 0
+{
+    temp=XBYTE[address];
+    temp=temp*1.0/255*800;
+    XBYTE[address]=0;   /* 启动下一次转换 */
+}</pre><button class="btn secondary small" data-copy-template="tpl-adc">复制 ADC0809 模板</button>
+      </details>
+    </div>
+    <div class="panel">
+      <h3>最后检查：编程题最容易丢分的地方</h3>
+      <div class="grid2">
+        <ul class="answer-checklist">
+          <li>INT0 = interrupt 0；T0 = interrupt 1；INT1 = interrupt 2。</li>
+          <li>使用中断时，EA 和对应中断允许位都要开启。</li>
+          <li>启动定时器要写 TR0=1 或 TR1=1。</li>
+          <li>定时初值必须根据题目晶振频率重新计算。</li>
+          <li>方式2为8位自动重装：TH保存重装值，TL为当前计数值。</li>
+          <li>PWM先算总次数，再算高电平次数；周期变化时总次数也变化。</li>
+        </ul>
+        <ul class="answer-checklist">
+          <li>共阳极与共阴极数码管段码不能混用。</li>
+          <li>步进电机相序数组要与接线和转向要求相符。</li>
+          <li>0xFD只适用于特定晶振、波特率和SMOD设置。</li>
+          <li>C语言区分大小写，语句末尾要有分号。</li>
+          <li>中断服务程序访问的变量应定义在函数外部。</li>
+          <li>数组下标不能越界：八拍为0～7，段码为0～9。</li>
+        </ul>
+      </div>
+      <div class="notice"><b>背诵口诀：</b>流水灯初值定方向；数码管段码存数组；外部中断设触发、开中断、写ISR；定时器设方式、装初值、开中断、启动；PWM定时中断加软件计数；步进电机相序数组控制输出；串口写SBUF查TI；ADC按接口电路启动、读取、换算。</div>
+    </div>
+  </section>
+
+  <div class="footer">离线单文件学习站 · 学习记录仅保存在当前浏览器 · 可通过编辑 index.html 中的题库数组扩展科目</div>
 </div>
+
 <script>
-const CATEGORIES = ["全部题目","I/O基础","定时器","数字逻辑","中断","C51编程"];
+const CATEGORIES = ["全部题目","第一章：单片机基础知识","基础与存储器","I/O并行口与显示","定时器/计数器","中断系统","PWM与步进电机","串行通信","AD/DA接口","C51程序设计"];
 const QUESTIONS = [
-  {
-    "id": "demo_io",
-    "cat": "I/O基础",
-    "title": "用位掩码控制 P1 的最低位",
-    "hw": "示例1",
-    "type": "编程思路",
-    "question": "若要在不改变 P1 其他位的情况下置位最低位，应使用什么运算？",
-    "conclusion": "使用按位或：P1 |= 0x01。",
-    "brief": "掩码 0x01 仅在最低位为 1，按位或后其他位保持原状。",
-    "full": "按位或满足 x|0=x、x|1=1。因此 P1 |= 0x01 只将最低位置为 1；清除该位可使用 P1 &= ~0x01。实际硬件应用还应核对引脚电路与电平定义。",
-    "steps": [
-      "确定要改变的位。",
-      "构造 0x01 掩码。",
-      "说明按位或对其他位的影响。"
-    ],
-    "source": "原创演示题"
-  },
-  {
-    "id": "demo_clock",
-    "cat": "定时器",
-    "title": "经典 12T 内核的机器周期",
-    "hw": "示例1",
-    "type": "计算题",
-    "question": "经典 12T 8051 使用 12 MHz 晶振，机器周期是多少？",
-    "conclusion": "Tcy = 12 / fosc = 1 μs。",
-    "brief": "12 MHz 的振荡周期约为 0.0833 μs；12 个振荡周期构成 1 个机器周期。",
-    "full": "将 fosc=12×10^6 Hz 代入 Tcy=12/fosc，得到 Tcy=1×10^-6 s，即 1 μs。这一关系适用于经典 12T 内核，不直接套用到 1T 等其他内核。",
-    "steps": [
-      "确认芯片是 12T 内核。",
-      "写出 Tcy=12/fosc。",
-      "代入晶振频率并换算单位。"
-    ],
-    "source": "原创演示题"
-  },
-  {
-    "id": "demo_timer",
-    "cat": "定时器",
-    "title": "8 位计数器的计数次数",
-    "hw": "示例2",
-    "type": "计算题",
-    "question": "一个 8 位上溢计数器从初值 56 开始，到溢出需要多少次计数？",
-    "conclusion": "256 − 56 = 200 次。",
-    "brief": "8 位计数器共有 2^8=256 个状态；从 56 到溢出还需 200 次递增。",
-    "full": "按 n=2^8−初值计算，n=256−56=200。若每次计数间隔为 1 μs，则对应间隔为 200 μs；实际定时应核对中断延迟与硬件工作方式。",
-    "steps": [
-      "确定计数器位宽。",
-      "计算总状态数 2^8。",
-      "用总状态数减去初值。"
-    ],
-    "source": "原创演示题"
-  },
-  {
-    "id": "demo_mask",
-    "cat": "数字逻辑",
-    "title": "十六进制按位与",
-    "hw": "示例2",
-    "type": "计算题",
-    "question": "0x3C 与 0x0F 按位与，结果是多少？",
-    "conclusion": "0x3C & 0x0F = 0x0C。",
-    "brief": "0x0F 只保留低四位，0x3C 的低四位为 0xC。",
-    "full": "0x3C = 0011 1100，0x0F = 0000 1111；逐位相与得到 0000 1100，即 0x0C。位掩码常用于读取寄存器中的特定位段。",
-    "steps": [
-      "将两个数写成二进制。",
-      "逐位相与。",
-      "把结果写回十六进制。"
-    ],
-    "source": "原创演示题"
-  },
-  {
-    "id": "demo_interrupt",
-    "cat": "中断",
-    "title": "中断处理结束后如何返回",
-    "hw": "示例3",
-    "type": "简答题",
-    "question": "中断服务程序结束后，为什么需要恢复被打断程序的执行位置？",
-    "conclusion": "保证主程序能从被打断的位置继续执行。",
-    "brief": "处理中断前保存必要的执行现场，处理结束后恢复，使主程序继续运行。",
-    "full": "中断会暂时改变 CPU 的控制流。硬件和编译器按约定保存/恢复返回位置及必要寄存器，服务程序结束后执行中断返回；应用代码也必须避免破坏需要保留的状态。",
-    "steps": [
-      "说明中断改变控制流。",
-      "指出现场保护与恢复。",
-      "说明中断返回后的行为。"
-    ],
-    "source": "原创演示题"
-  },
-  {
-    "id": "demo_loop",
-    "cat": "C51编程",
-    "title": "主循环负责持续工作",
-    "hw": "示例3",
-    "type": "代码阅读",
-    "question": "嵌入式程序中的 while(1) 通常承担什么角色？",
-    "conclusion": "让主程序持续执行周期性任务。",
-    "brief": "初始化完成后进入循环，不断读取输入、更新状态或处理任务。",
-    "full": "while(1) 是永不主动退出的主循环。通常在循环外完成初始化，在循环内处理周期性任务；中断则适合处理对时序敏感的事件。实际工程应考虑看门狗、错误处理和任务调度。",
-    "steps": [
-      "区分初始化与运行阶段。",
-      "解释循环条件恒为真。",
-      "举例说明周期性任务。"
-    ],
-    "source": "原创演示题"
-  }
+{id:"mem",cat:"基础与存储器",title:"80C51 片内数据存储器分为几个区域？",hw:"作业1",type:"简答题",question:"80C51 系列单片机的片内数据存储器可以分为几个区域，各区的地址范围及特点如何？",conclusion:"分为工作寄存器区（00H～1FH）、位寻址区（20H～2FH）、堆栈及数据缓冲区（30H～7FH）和特殊功能寄存器区 SFR（80H～FFH）。",brief:"按功能分为四区：工作寄存器区、位寻址区、堆栈及数据缓冲区、SFR 区。地址范围依次为 00H～1FH、20H～2FH、30H～7FH、80H～FFH。",full:"（1）工作寄存器区（00H～1FH）：共 32 个字节，分为 4 组，每组 8 个寄存器，分别为 R0～R7。\n（2）位寻址区（20H～2FH）：共 16 字节、128 位，位地址为 00H～7FH，可对位进行置 1、清 0、取反、传送和逻辑运算。\n（3）堆栈及数据缓冲区（30H～7FH）：共 80 个单元，用于存放用户数据或作为堆栈区。\n（4）特殊功能寄存器区 SFR（80H～FFH）：用于管理片内功能部件，如定时器/计数器、中断系统和 I/O 接口等。",steps:["先写出四个区域名称。","按地址从低到高列出范围。","补充每个区域的容量或主要用途。"],source:"作业1答案及评分标准；第3章课件"},
+{id:"ports",cat:"I/O并行口与显示",title:"P0～P3 四个并行口的功能与区别",hw:"作业1、作业3",type:"简答题",question:"89C51 单片机有四个并口 P0～P3，各有哪些功能？作为通用 I/O 口使用时，它们之间有什么区别？",conclusion:"P0 为需外接上拉电阻的 8 位双向口，可复用为低 8 位地址/数据总线；P1 为带内部上拉的准双向口；P2 带内部上拉，可复用为高 8 位地址总线；P3 带内部上拉，具有第二功能。",brief:"P0：漏极开路，通用 I/O 时需外接上拉电阻，扩展时作 AD0～AD7。\nP1：内部上拉的 8 位准双向 I/O。\nP2：内部上拉的 8 位准双向 I/O，扩展时作高 8 位地址总线。\nP3：内部上拉的 8 位准双向 I/O，另有第二功能。",full:"（1）P0 口：8 位双向 I/O 口。作为通用 I/O 口时需外接上拉电阻；系统扩展时，分时作为低 8 位地址线和双向数据总线。\n（2）P1 口：内部具有上拉电阻的 8 位准双向 I/O 口，通常只作通用 I/O 口。\n（3）P2 口：内部具有上拉电阻的 8 位准双向 I/O 口；系统扩展时作高 8 位地址总线，其他时候作通用 I/O 口，与 P1 口类似。\n（4）P3 口：内部具有上拉电阻的 8 位准双向 I/O 口；一般作通用 I/O 口，也可使用第二功能：P3.0/RXD、P3.1/TXD、P3.2/INT0、P3.3/INT1、P3.4/T0、P3.5/T1、P3.6/WR、P3.7/RD。\n总结：P0 是真正的双向口，作普通 I/O 时需外接上拉；P1～P3 是准双向口；P2 有高位地址复用功能，P3 有第二功能。",steps:["先逐个写 P0、P1、P2、P3 的基本结构。","再写 P0、P2 的外部总线复用功能。","最后突出 P0 需外接上拉、P1～P3 内部上拉、P3 有第二功能。"],source:"作业1/作业3答案及评分标准；第5章课件"},
+{id:"ledup",cat:"I/O并行口与显示",title:"8 位 LED 流水灯上移（for 语句）",hw:"作业1、作业3",type:"编程题",question:"依据电路原理图，采用 for 语句编写程序，实现 8 位 LED 流水灯上移。",conclusion:"以 0x01 为初值，循环输出到 P1 口，每次左移一位并延时；循环 8 次后重新开始。",brief:"定义 led、i；led=0x01；for 循环中依次执行 P1=led、延时、led 左移一位。高电平点亮的接法下，直接输出 led。",full:"程序思路：用一个 8 位变量保存当前亮灯位置。初值为 0x01；每次将该值送到 P1 口，延时后左移一位；循环 8 次后重新从最低位开始，实现流水灯逐位上移。老师作业3评分标准使用高电平点亮的输出形式。",code:"#include <reg51.h>\\n#define uchar unsigned char\\nvoid delay_ms(uchar ms);\\nvoid main()\\n{\\n    uchar led,i;\\n    while(1)\\n    {\\n        led=0x01;\\n        for(i=0;i<8;i++)\\n        {\\n            P1=led;\\n            delay_ms(100);\\n            led <<= 1;\\n        }\\n    }\\n}\\nvoid delay_ms(uchar ms)\\n{\\n    uchar i;\\n    while(ms--)\\n        for(i=0;i<124;i++);\\n}",steps:["定义无符号字符型变量 led 和循环变量 i。","将 led 初始化为 0x01。","for 循环中把 led 输出到 P1 口。","延时后执行 led <<= 1，循环 8 次。"],source:"作业3答案及评分标准；第5章流水灯例题"},
+{id:"leddown",cat:"I/O并行口与显示",title:"8 位 LED 流水灯下移（for / if）",hw:"作业1、作业3",type:"编程题",question:"采用 for 语句或 if 语句，编写 8 位 LED 流水灯下移程序。",conclusion:"从 0x80 开始，输出后延时并右移一位；循环 8 次后重新开始。",brief:"下移方向与上移相反：初值 led=0x80；P1=led；延时；led>>=1。若使用 if，判断移位后是否为 0，为 0 时恢复 0x80。",full:"采用 for 语句时：先令 led=0x80，循环 8 次，每次将 led 输出到 P1，延时后右移一位。\n采用 if 语句时：在 while(1) 中持续输出 led；每次右移后判断 led 是否变为 0，若为 0 则重新赋值 0x80。注意题目指定的循环语句要与答案要求一致。",code:"/* for 语句版本 */\\nled=0x80;\\nfor(i=0;i<8;i++)\\n{\\n    P1=led;\\n    delay_ms(100);\\n    led >>= 1;\\n}\\n\\n/* if 语句版本 */\\nwhile(1)\\n{\\n    if(led==0) led=0x80;\\n    P1=led;\\n    delay_ms(100);\\n    led >>= 1;\\n}",steps:["确定下移方向，初值设为最高位 0x80。","将当前值送 P1 口并延时。","执行右移 led >>= 1。","for 版本循环 8 次；if 版本判断 led==0 后恢复初值。"],source:"作业1答案及评分标准；作业3题目与答案"},
+{id:"segcode",cat:"I/O并行口与显示",title:"共阳极、共阴极数码管段码如何区分？",hw:"作业2、作业3",type:"简答题 / 速查",question:"数码管共阳极和共阴极的段码有什么区别？给出数字 0～9 的段码数组。",conclusion:"共阳极低电平点亮，数字 0 的段码为 C0H；共阴极高电平点亮，数字 0 的段码为 3FH。",brief:"共阳极：公共端接高电平，段选输出 0 点亮，0～9 段码以 C0、F9、A4 开头。\n共阴极：公共端接低电平，段选输出 1 点亮，0～9 段码以 3F、06、5B 开头。",full:"段码是 a～g、dp 各段电平的组合。\n（1）共阳极数码管：公共端接 +5V，某段输入低电平时点亮，高电平时熄灭。数字 0 的字形码为 11000000B，即 C0H。\n（2）共阴极数码管：公共端接地，某段输入高电平时点亮，低电平时熄灭。数字 0 的字形码为 00111111B，即 3FH。\n老师作业3的一位秒表使用共阳极段码；作业2脉冲计数显示程序使用共阴极段码。",code:"/* 共阳极 */\\nuchar code DSY_CODE[]={0xC0,0xF9,0xA4,0xB0,0x99,\\n                       0x92,0x82,0xF8,0x80,0x90};\\n/* 共阴极 */\\nuchar code table[]={0x3f,0x06,0x5b,0x4f,0x66,\\n                     0x6d,0x7d,0x07,0x7f,0x6f};",steps:["先看公共端接 +5V 还是接地。","公共端接 +5V 为共阳极，低电平点亮。","公共端接地为共阴极，高电平点亮。","按硬件类型选用对应段码数组，不能混用。"],source:"作业2/作业3答案；第5章课件"},
+{id:"stopwatch",cat:"I/O并行口与显示",title:"单个数码管实现 0～9 循环秒表",hw:"作业3",type:"编程题",question:"AT89C51 驱动 1 个数码管，开始显示 0，以后每过 1s 加 1，显示内容 0～9 循环。Delay() 为 1s 延时子程序，请给出七段码数组及程序。",conclusion:"使用共阳极段码数组查表输出到 P2 口，每次延时后执行 i=(i+1)%10。",brief:"定义共阳极段码数组 DSY_CODE；i 初值为 0；循环执行 P2=DSY_CODE[i]、i=(i+1)%10、Delay()。",full:"本题按老师作业3答案，采用共阳极数码管和静态显示方式。\n（1）定义 0～9 的共阳极段码数组。\n（2）定义显示变量 i，初值为 0。\n（3）在 while(1) 中将 DSY_CODE[i] 送 P2 口。\n（4）执行 i=(i+1)%10，使显示值在 0～9 之间循环。\n（5）调用 Delay()，每次间隔 1s。",code:"uchar code DSY_CODE[]={0xC0,0xF9,0xA4,0xB0,0x99,\\n                       0x92,0x82,0xF8,0x80,0x90};\\nvoid main()\\n{\\n    uchar i=0;\\n    while(1)\\n    {\\n        P2=DSY_CODE[i];\\n        i=(i+1)%10;\\n        Delay();\\n    }\\n}",steps:["根据共阳极数码管确定段码数组。","定义 i=0，作为当前显示数字。","将 DSY_CODE[i] 送到 P2 口。","i=(i+1)%10，完成 0～9 循环。","调用 Delay() 实现 1s 间隔。"],source:"作业3答案及评分标准；第5章例5-3"},
+{id:"timerconcept",cat:"定时器/计数器",title:"定时与计数的区别、机器周期计算",hw:"课件第7章",type:"简答题 / 计算题",question:"说明 80C51 定时与计数的基本原理，并计算 6MHz、12MHz 晶振下的机器周期。",conclusion:"定时是对内部固定周期的机器周期脉冲计数；计数是对外部输入脉冲计数。经典 12T 80C51 的机器周期 Tcy=12/fosc。",brief:"定时器对内部机器周期脉冲计数，计数器对外部脉冲计数。Tcy=12/fosc；12MHz 时为 1μs，6MHz 时为 2μs。",full:"定时和计数都是利用计数器对脉冲进行计数。\n（1）定时：对周期固定的内部机器周期脉冲进行计数，定时时间等于脉冲周期与脉冲个数的乘积。\n（2）计数：对外界产生的脉冲进行计数。\n经典 12T 80C51：一个机器周期包含 12 个时钟周期，因此 Tcy=12/fosc。\n当 fosc=12MHz 时，Tcy=12/(12×10⁶)=1μs；当 fosc=6MHz 时，Tcy=12/(6×10⁶)=2μs。",steps:["写出定时与计数的定义。","写出经典 12T 机器周期公式 Tcy=12/fosc。","将晶振频率换算为 Hz 后代入。","写出单位为 μs 的结果。"],source:"第3章时序；第7章定时/计数概述"},
+{id:"timermodes",cat:"定时器/计数器",title:"T0/T1 四种工作方式如何选择？",hw:"作业2、作业4",type:"简答题",question:"说明 80C51 定时器/计数器 T0、T1 的工作方式及 TMOD 中 M1、M0 的选择。",conclusion:"方式0为13位，方式1为16位，方式2为8位自动重装，方式3仅适用于T0并拆分为两个8位计数器。",brief:"M1M0=00：方式0，13位；01：方式1，16位；10：方式2，8位自动重装；11：方式3，仅 T0 可用。",full:"TMOD 用于选择定时器/计数器的工作模式和工作方式，低 4 位控制 T0，高 4 位控制 T1。\n（1）方式0（M1M0=00）：13 位定时器/计数器。\n（2）方式1（M1M0=01）：16 位定时器/计数器。\n（3）方式2（M1M0=10）：8 位自动重装初值方式，TLx 溢出后由 THx 自动重装。\n（4）方式3（M1M0=11）：仅适用于 T0，T0 分为两个独立的 8 位计数器，T1 停止计数。\n选择时：需要较长单次定时可选方式1；需要稳定、重复的短定时可选方式2；方式0按题目要求掌握其 13 位结构。",steps:["看题目要求使用 T0 还是 T1。","确定所需计数位数或是否需要自动重装。","按 M1M0 对照方式表。","设置 TMOD 对应的低 4 位（T0）或高 4 位（T1）。"],source:"第7章课件 7.2.1～7.2.3"},
+{id:"timer6m",cat:"定时器/计数器",title:"6MHz 晶振，定时 200μs：三种方式的初值",hw:"作业2、作业4",type:"计算题",question:"80C51 采用 6MHz 晶振，求 T0 在方式0、方式1、方式2下的定时范围；若要求定时 200μs，求 TH0、TL0 初值。",conclusion:"Tcy=2μs；方式0/1/2 定时范围分别为 2～16384μs、2～131072μs、2～512μs。200μs 初值：方式0 TH0=FCH、TL0低5位=1CH；方式1 TH0=FFH、TL0=9CH；方式2 TH0=TL0=9CH。",brief:"Tcy=12/6MHz=2μs，N=200/2=100。\n方式0：8192−100=8092=1F9CH，TH0=FCH，TL0低5位=1CH。\n方式1：65536−100=FF9CH。\n方式2：256−100=9CH，TH0=TL0=9CH。",full:"① 机器周期：Tcy=12/fosc=12/(6×10⁶)=2μs。\n② 最大定时范围：\n方式0：1～8192 次，最大 8192×2=16384μs；\n方式1：1～65536 次，最大 65536×2=131072μs；\n方式2：1～256 次，最大 256×2=512μs。\n③ 200μs 所需计数次数：N=T/Tcy=200/2=100。\n④ 各方式初值：\n方式0：x=8192−100=8092=1F9CH，取低 13 位，TH0=FCH，TL0=1CH（低 5 位有效）。\n方式1：x=65536−100=65436=FF9CH，TH0=FFH，TL0=9CH。\n方式2：x=256−100=156=9CH，TH0=9CH，TL0=9CH。",steps:["计算机器周期 Tcy=12/fosc=2μs。","计算所需计数次数 N=200/2=100。","根据方式位数分别用 2¹³、2¹⁶、2⁸ 减去 N。","把初值转换为十六进制，并拆分 TH0、TL0。"],source:"作业4答案及评分标准；第7章定时器课件"},
+{id:"timer12m",cat:"定时器/计数器",title:"12MHz 晶振，T0 方式2 定时 200μs",hw:"作业2、作业4",type:"计算题 / 初始化",question:"晶振 12MHz，使用 T0 方式2产生 200μs 定时，求初值并写初始化程序。",conclusion:"Tcy=1μs，N=200，初值 256−200=56=38H，TH0=TL0=38H，TMOD=02H。",brief:"Tcy=12/12MHz=1μs；N=200μs/1μs=200；方式2初值 x=256−200=56=38H。",full:"（1）机器周期：Tcy=12/fosc=12/(12×10⁶)=1μs。\n（2）计数次数：N=200μs/1μs=200。\n（3）方式2初值：x=256−N=56=38H。\n（4）方式2下 TH0 保存自动重装值，TL0 为计数器，因此 TH0=38H、TL0=38H。\n（5）TMOD=02H，选择 T0 定时方式、方式2；启动时置 TR0=1。",code:"void init_time0(void)\\n{\\n    TMOD=0x02;   // T0 定时，方式2\\n    TH0=0x38;\\n    TL0=0x38;\\n    TR0=1;       // 启动 T0\\n}",steps:["由 12MHz 算出 Tcy=1μs。","计算 200μs 对应 200 次计数。","方式2初值 x=256−200=56=38H。","设置 TMOD=02H，TH0=TL0=38H，启动 TR0。"],source:"作业2/作业4步进电机题；第7章例7-4"},
+{id:"timerinit",cat:"定时器/计数器",title:"定时器初始化程序的标准答题框架",hw:"课件第7章",type:"编程模板",question:"编写 T0 定时器初始化程序时，通常需要设置哪些寄存器和控制位？",conclusion:"依次设置 TMOD、TH0/TL0，按需开放 ET0 和 EA，最后置 TR0 启动定时器。",brief:"先选工作方式并写 TMOD；装入 TH0、TL0 初值；若采用中断方式，开放 ET0、EA；最后 TR0=1。",full:"定时器初始化的标准顺序：\n（1）设置 TMOD，选择 T0/T1、定时/计数模式及工作方式。\n（2）装入 TH0、TL0（或 TH1、TL1）初值。\n（3）采用中断方式时，开放对应中断允许位 ET0/ET1，并开放总中断 EA。\n（4）置 TR0/TR1=1，启动定时器。\n（5）方式0、方式1溢出后通常需要在中断服务程序中重新装入初值；方式2由硬件自动重装。",code:"void Timer0_Init(void)\\n{\\n    TMOD = 0x02;       // 例：T0 方式2定时\\n    TH0  = 0x38;       // 装入初值\\n    TL0  = 0x38;\\n    ET0  = 1;          // 允许 T0 中断（中断方式需要）\\n    EA   = 1;          // 开总中断\\n    TR0  = 1;          // 启动 T0\\n}",steps:["确定题目要求：定时还是计数、T0还是T1、工作方式。","根据定时时间计算并装入初值。","若题目要求中断，设置 ET0/ET1 和 EA。","启动定时器 TR0/TR1。"],source:"第7章课件初始化示例；作业2/作业4程序"},
+{id:"intsources",cat:"中断系统",title:"80C51 五个中断源、中断号和入口地址",hw:"作业2、作业4",type:"简答题 / 速查",question:"列出 80C51 的五个中断源、中断号及中断向量。",conclusion:"外部中断0：中断号0、0003H；T0：1、000BH；外部中断1：2、0013H；T1：3、001BH；串口：4、0023H。",brief:"按 C51 中断号记忆：外0=0，T0=1，外1=2，T1=3，串口=4；入口地址依次为 0003H、000BH、0013H、001BH、0023H。",full:"80C51 有 5 个中断源，两个中断优先级。\n（1）外部中断0：C51 中断号 0，入口地址 0003H。\n（2）定时器/计数器 T0 溢出中断：中断号 1，入口地址 000BH。\n（3）外部中断1：中断号 2，入口地址 0013H。\n（4）定时器/计数器 T1 溢出中断：中断号 3，入口地址 001BH。\n（5）串行口中断：中断号 4，入口地址 0023H。\n同级中断同时申请时，按硬件自然优先级顺序响应：外0、T0、外1、T1、串口。",steps:["先记住五个中断源的固定顺序。","C51 中断号从 0 到 4。","入口地址从 0003H 起，每个中断向量相差 8 个字节。","题目要求中断号时写 C51 编号，要求向量时写十六进制入口地址。"],source:"第6章课件表6-1；第4章 C51 中断函数表"},
+{id:"ieip",cat:"中断系统",title:"IE=87H、IP=02H：判断 CPU 响应顺序",hw:"作业2、作业4",type:"寄存器分析题",question:"IE 寄存器内容为 0x87，IP 寄存器内容为 0x02，按中断优先级先后顺序给出 CPU 能响应的中断请求名称、中断号及中断向量。",conclusion:"高优先级：T0 中断（中断号1，000BH）；低优先级按自然顺序：外部中断0（号0，0003H）、外部中断1（号2，0013H）。",brief:"IE=87H：EA、EX1、ET0、EX0 置 1，开放总中断、外0、T0、外1。IP=02H：PT0=1，T0 为高优先级，其余为低优先级。低优先级按自然顺序外0先于外1。",full:"① 将 IE=87H 写成二进制：1000 0111B。EA=1；EX1=1；ET0=1；EX0=1；因此开放总中断、外部中断0、定时器0和外部中断1；ES、ET1 未置位。\n② IP=02H，即 0000 0010B，PT0=1，因此 T0 为高优先级；其余已开放的外中断0、外中断1为低优先级。\n③ 高优先级先响应：T0 中断，中断号1，入口地址000BH。\n④ 低优先级内部按自然优先级顺序：外部中断0，中断号0，入口地址0003H；外部中断1，中断号2，入口地址0013H。\n该顺序与老师作业2、作业4答案一致。",steps:["把 IE=87H 转成二进制，逐位判断 EA、EX1、ET0、EX0。","把 IP=02H 转成二进制，判断 PT0=1，T0 为高级。","先列高级中断 T0。","再按自然优先级列低级中断：外0、外1。","补全中断号和向量地址。"],source:"作业2/作业4答案及评分标准；第6章中断系统课件"},
+{id:"extint1",cat:"中断系统",title:"INT1 下降沿触发初始化与脉冲计数",hw:"作业2、作业4",type:"编程题",question:"采用外部中断1进行脉冲计数，编写 INT1 下降沿触发初始化程序和中断服务程序，将计数值存入整型变量 X。",conclusion:"设置 IT1=1、EX1=1、EA=1；中断服务程序使用 interrupt 2，每次进入执行 X++。",brief:"INT1 下降沿触发：IT1=1；开放外部中断1：EX1=1；开放总中断：EA=1。C51 中断号为2，服务程序中 X++。",full:"初始化程序：\n（1）IT1=1，将外部中断1设为边沿触发方式，即下降沿有效。\n（2）EX1=1，允许外部中断1。\n（3）EA=1，开放总中断。\n中断服务程序：函数声明为 void 函数名(void) interrupt 2；每产生一次有效下降沿，CPU 转入中断服务程序，将整型变量 X 加 1。",code:"#include <reg51.h>\\nunsigned int X=0;\\nvoid init(void)\\n{\\n    IT1=1;   // INT1 下降沿触发\\n    EX1=1;   // 允许外部中断1\\n    EA=1;    // 开总中断\\n}\\nvoid exter1(void) interrupt 2\\n{\\n    X++;\\n}\\nvoid main(void)\\n{\\n    init();\\n    while(1)\\n    {\\n        // 可在此调用显示程序 display(X)\\n    }\\n}",steps:["定义整型计数变量 X，并初始化为 0。","设置 IT1=1，选择 INT1 下降沿触发。","设置 EX1=1、EA=1，开放中断。","编写 interrupt 2 中断服务程序。","在中断服务程序中执行 X++。"],source:"作业2/作业4答案及评分标准；第6章课件"},
+{id:"isrflow",cat:"中断系统",title:"中断响应条件与中断服务流程",hw:"课件第6章",type:"简答题",question:"说明 CPU 响应中断的必要条件，以及中断服务程序的基本流程。",conclusion:"EA=1、对应中断请求标志为1、该中断允许位为1、无同级或更高级中断正在服务；响应后保护断点、执行 ISR，RETI 返回。",brief:"响应条件：总中断开放、出现请求、对应中断允许、当前没有同级或更高级中断正在服务。流程：主程序→中断请求→响应并保护断点→执行中断服务程序→RETI→返回主程序。",full:"CPU 响应中断需满足：\n（1）IE 中总中断允许位 EA=1。\n（2）该中断源发出中断请求，对应请求标志为 1。\n（3）该中断源的中断允许位为 1，即未被屏蔽。\n（4）无同级或更高级中断正在被服务。\n中断流程：CPU 执行主程序时发生中断请求；满足响应条件后，CPU 在适当时机保护断点及现场信息，转入中断服务程序；中断服务程序完成处理后，以 RETI 中断返回指令返回断点，继续执行主程序。",steps:["先写四项中断响应必要条件。","说明 CPU 保护断点后转入中断服务程序。","说明服务程序执行具体处理。","最后写 RETI 返回主程序断点。"],source:"第6章课件 6.1、6.2.2、6.3"},
+{id:"pwm2",cat:"PWM与步进电机",title:"作业2：PWM 题目与评分标准的周期差异",hw:"作业2",type:"编程题 / 易错辨析",question:"作业2 PWM 题干写周期 10ms、占空比55%，但评分标准程序使用 PWMH=55、PWM=100、COUNTER%=100。如何按老师资料作答？",conclusion:"作业2评分标准给出的程序参数对应 100 个 10μs 计数，即 1ms 周期；题干写 10ms，二者不一致。考试按题干 10ms 应使用 1000 次计数、550 次高电平。",brief:"必须注意原资料不一致：题干 10ms；评分标准程序 COUNTER%=100、PWMH=55，对应 1ms。若严格按题干 10ms，周期计数为1000，高电平计数为550。",full:"题干要求：周期 10ms，占空比 55%，T0 每次定时 10μs，晶振 12MHz。\n按题干计算：周期计数次数=10ms/10μs=1000；高电平次数=1000×55%=550；低电平次数=450。\n但作业2评分标准中的程序为 PWMH=55、COUNTER%=100，若每次中断 10μs，则总周期为 100×10μs=1ms，而不是题干的 10ms。\n因此复习时应把“题干要求”和“评分标准原程序”区分开。作业4同类题的评分标准采用 PWMH=550、COUNTER%=1000，与 10ms、55%相符。",code:"/* 按题干 10ms、55%：每次中断 10μs */\\nPWMH=550;\\nCOUNTER=0;\\nTMOD=0x02;\\nTL0=0xF6;   // 256-10，12MHz 下 10μs\\nTH0=0xF6;\\nET0=1; EA=1; TR0=1;\\n\\nvoid INTTO(void) interrupt 1\\n{\\n    COUNTER++;\\n    COUNTER%=1000;\\n    if(COUNTER<PWMH) P1_0=1;\\n    else P1_0=0;\\n}",steps:["先看题干：10ms、55%、每次中断10μs。","计算总计数次数：10ms÷10μs=1000。","计算高电平计数：1000×55%=550。","对照作业2评分标准：其 100 次计数只对应 1ms，存在差异。","作业4的 1000 次计数版本与 10ms 题意一致。"],source:"作业2题干与答案；作业4答案及评分标准",warning:"原始资料存在矛盾：作业2题干写 10ms，评分标准程序却按 1ms 编写。此处保留差异，不将两者混为一个答案。"},
+{id:"pwm4",cat:"PWM与步进电机",title:"作业4：10ms 周期、55% 占空比 PWM",hw:"作业4",type:"编程题",question:"PWM 周期为 10ms，占空比 55%，T0 定时 10μs，晶振 12MHz，使用 P1.0 输出，编写初始化程序和中断服务程序。",conclusion:"每次中断10μs，1000次构成10ms；高电平550次。方式2初值F6H，PWMH=550，COUNTER%=1000。",brief:"Tcy=1μs，方式2定时10μs：初值256−10=246=F6H。总计数1000，高电平550。初始化 TMOD=02H、TH0=TL0=F6H、ET0=EA=TR0=1。",full:"（1）12MHz 晶振，Tcy=1μs。\n（2）T0 方式2，每次定时10μs，计数次数 N=10/1=10，初值 x=256−10=246=F6H。\n（3）PWM 周期计数次数=10ms/10μs=1000。\n（4）高电平计数次数=1000×55%=550。\n（5）中断服务程序中 COUNTER 每次加1，并对1000取模；COUNTER 小于550时 P1.0 输出高电平，否则输出低电平。",code:"unsigned int COUNTER;\\nunsigned int PWMH=550;\\nvoid main(void)\\n{\\n    COUNTER=0;\\n    TMOD=0x02;\\n    TL0=0xF6;  // 256-10\\n    TH0=0xF6;\\n    ET0=1;\\n    EA=1;\\n    TR0=1;\\n    while(1) { }\\n}\\nvoid INTTO(void) interrupt 1\\n{\\n    COUNTER++;\\n    COUNTER%=1000;\\n    if(COUNTER<PWMH) P1_0=1;\\n    else P1_0=0;\\n}",steps:["算出 Tcy=1μs。","算出 10μs 对应 10 次计数，方式2初值 F6H。","10ms÷10μs=1000 次，作为周期计数。","1000×55%=550 次，作为高电平计数。","按评分标准写初始化和 T0 中断服务程序。"],source:"作业4题干与答案及评分标准"},
+{id:"stepper10",cat:"PWM与步进电机",title:"作业2：四相八拍步进电机，脉冲间隔10ms",hw:"作业2",type:"编程题",question:"四相八拍步进电机由单片机产生驱动脉冲，T0 定时200μs，脉冲输出间隔10ms，给出控制数组和程序。",conclusion:"控制数组为 {08H,0CH,04H,06H,02H,03H,01H,09H}；200μs 中断一次，50次为10ms，更新一次拍序。",brief:"12MHz 下 Tcy=1μs，T0方式2初值38H；10ms/200μs=50次中断更新一次步进状态。",full:"老师作业2答案：\n（1）四相八拍控制数组：08H、0CH、04H、06H、02H、03H、01H、09H。\n（2）T0 方式2，定时200μs。12MHz 时 Tcy=1μs，初值256−200=56=38H，TH0=TL0=38H。\n（3）脉冲间隔10ms，需要 10ms/200μs=50 次中断。\n（4）中断中累计 timer，达到50后清零并使 timer1 加1；timer1 对8取模，按数组顺序输出到 P1。",code:"char ndata[8]={0x08,0x0c,0x04,0x06,0x02,0x03,0x01,0x09};\\nint timer=0,timer1=0;\\nvoid main(void)\\n{\\n    TMOD=0x02;\\n    TL0=0x38; TH0=0x38;\\n    ET0=1; EA=1; TR0=1;\\n    P1=0x00;\\n    while(1) { }\\n}\\nvoid INTTO(void) interrupt 1\\n{\\n    timer++;\\n    if(timer==50) { timer=0; timer1++; }\\n    timer1%=8;\\n    P1=ndata[timer1];\\n}",steps:["抄写四相八拍控制数组，顺序不能错。","12MHz 下 200μs 方式2初值为38H。","计算 10ms/200μs=50 次中断。","计数到50后 timer 清零，timer1 加1。","timer1 对8取模，查表输出到 P1。"],source:"作业2题干与答案及评分标准"},
+{id:"stepper100",cat:"PWM与步进电机",title:"作业4：四相八拍步进电机，脉冲间隔100ms",hw:"作业4",type:"编程题 / 易错辨析",question:"作业4步进电机题要求 T0 定时200μs，脉冲输出间隔100ms，给出控制数组和程序。",conclusion:"控制数组与作业2相同；100ms/200μs=500次中断，因此 timer==500 时更新拍序。",brief:"T0 方式2初值38H；100ms÷200μs=500 次中断更新一次，数组仍为 {08,0C,04,06,02,03,01,09}。",full:"作业4的步进电机题与作业2的区别在于脉冲输出间隔：作业2为10ms，作业4为100ms。\n（1）控制数组相同：08H、0CH、04H、06H、02H、03H、01H、09H。\n（2）T0 每次定时200μs，12MHz 晶振下方式2初值为38H。\n（3）100ms/200μs=500 次中断，因此 timer==500 时清零并更新 timer1。\n（4）timer1 对8取模，按数组顺序输出。",code:"char ndata[8]={0x08,0x0c,0x04,0x06,0x02,0x03,0x01,0x09};\\nint timer=0,timer1=0;\\nvoid main(void)\\n{\\n    TMOD=0x02;\\n    TL0=0x38; TH0=0x38;\\n    ET0=1; EA=1; TR0=1;\\n    P1=0x00;\\n    while(1) { }\\n}\\nvoid INTTO(void) interrupt 1\\n{\\n    timer++;\\n    if(timer==500) { timer=0; timer1++; }\\n    timer1%=8;\\n    P1=ndata[timer1];\\n}",steps:["确认本题是作业4，间隔为100ms，不是作业2的10ms。","计算 100ms÷200μs=500。","使用与作业2相同的四相八拍数组。","将中断计数判断值写为500。","timer1 对8取模后查表输出。"],source:"作业4题干与答案及评分标准；作业2作对照",warning:"作业2的脉冲间隔是10ms（50次中断），作业4是100ms（500次中断）。两题只差间隔参数，但计数判断值不能写混。"},
+{id:"stepperprinciple",cat:"PWM与步进电机",title:"步进电机：脉冲个数、频率与转动的关系",hw:"步进电机课件",type:"简答题",question:"说明步进电动机的基本原理，以及输入脉冲个数、脉冲频率分别影响什么。",conclusion:"步进电机把电脉冲信号转换为机械位移；输入脉冲个数决定角位移，输入脉冲频率决定运行速度。",brief:"步进电动机是一种将电脉冲信号转换成机械位移的机电执行元件。角位移与输入脉冲个数成正比，运行速度与输入脉冲频率有关。",full:"步进电动机是一种将电脉冲信号转换成机械位移的机电执行元件。\n（1）角位移由输入脉冲个数决定，输入脉冲个数越多，转过的角度越大。\n（2）运行速度由输入脉冲频率决定，脉冲频率越高，运行速度越快。\n（3）定子励磁绕组按一定顺序轮流通电，转子在电磁吸力作用下逐步转动。\n（4）改变各相绕组通电顺序，可以改变转动方向。",steps:["先写步进电机的定义。","写角位移与输入脉冲个数的关系。","写运行速度与输入脉冲频率的关系。","补充轮流励磁和改变通电顺序可改变方向。"],source:"第7章——步进电机调速课件"},
+{id:"baud",cat:"串行通信",title:"960帧/秒：计算波特率与 TH1 初值",hw:"作业5",type:"计算题",question:"一帧信息有1个起始位、8个数据位、1个停止位，传输速率为每秒960帧，晶振11.0592MHz，SMOD=0，求波特率及 TH1 初值。",conclusion:"每帧10位，波特率=10×960=9600bps；SMOD=0、11.0592MHz 时 TH1=256−3=253=FDH。",brief:"帧长=1+8+1=10位；波特率=10×960=9600bps。方式1波特率公式代入 fosc=11.0592MHz、SMOD=0，可得 TH1=FDH。",full:"（1）异步帧包含1个起始位、8个数据位、1个停止位，因此每帧共10位。\n（2）波特率=每帧位数×每秒帧数=10×960=9600bps。\n（3）串口方式1常用 T1 方式2作为波特率发生器，公式：Baud=2^SMOD×fosc/[12×32×(256−TH1)]。\n（4）代入 SMOD=0、fosc=11.0592MHz、Baud=9600，得到 256−TH1=3，因此 TH1=253=FDH；方式2下 TL1 同样装入 FDH。",steps:["计算一帧总位数：1+8+1=10。","用 10×960 计算波特率。","写出串口方式1波特率公式。","代入晶振频率和 SMOD=0，求出 256−TH1=3。","得到 TH1=FDH；T1方式2下 TL1=FDH。"],source:"作业5答案及评分标准；第8章课件"},
+{id:"serialmode",cat:"串行通信",title:"80C51 串口工作方式：考试重点方式1",hw:"作业5",type:"简答题",question:"80C51 串行口有几种工作方式？作业中常用哪一种，SCON 如何设置？",conclusion:"串口有方式0～方式3四种；课件注明只要求掌握方式1。方式1为8位异步收发，SCON=40H用于发送，SCON=50H用于接收。",brief:"SM0SM1=01 为方式1：8位异步收发、波特率可变，由定时器控制；SCON=0x40 方式1发送，SCON=0x50 方式1且 REN=1，允许接收。",full:"80C51 串行口有四种工作方式，由 SCON 中 SM0、SM1 选择：\n方式0：移位寄存器方式；方式1：8位异步收发，波特率可变；方式2：9位异步收发，波特率为 fosc/64 或 fosc/32；方式3：9位异步收发，波特率可变。\n课件注明“只要求掌握方式1”。方式1一帧为10位：1位起始位0、8位数据位、1位停止位1，先发送最低位。\nSCON=0x40：方式1发送，不开放接收；SCON=0x50：方式1并置 REN=1，允许接收。",steps:["写出四种工作方式。","重点说明方式1的帧格式和波特率特点。","根据发送或接收任务选择 SCON=40H 或 50H。"],source:"第8章课件；作业5答案"},
+{id:"serialsend",cat:"串行通信",title:"查询方式发送 DATA[10] 数组",hw:"作业5",type:"编程题",question:"甲单片机将数组 DATA[10] 中的10个元素发送给乙单片机，要求波特率9600，采用查询方式，编写甲机程序。",conclusion:"SCON=40H、TMOD=20H、TH1=TL1=FDH、TR1=1；循环写 SBUF，等待 TI=1，软件清 TI。",brief:"串口方式1；T1方式2产生9600bps；初始化 PCON=00H、TH1=TL1=FDH、TR1=1。发送每个字节：SBUF=DATA[i]，while(TI==0)，TI=0。",full:"初始化：SCON=0x40（串口方式1）；TMOD=0x20（T1方式2，8位自动重装）；PCON=0x00（SMOD=0）；TH1=TL1=0xFD（9600bps）；TI=0；TR1=1。\n发送：循环 i=0～9，将 DATA[i] 写入 SBUF 启动发送；查询 TI，等待一帧发送完成；TI=1 后由软件清零，再发送下一个数据。",code:"#include <reg51.h>\\n#define uchar unsigned char\\nuchar DATA[10]={0,1,2,3,4,5,6,7,8,9};\\nvoid main(void)\\n{\\n    uchar i;\\n    SCON=0x40;      // 串口方式1\\n    TMOD=0x20;      // T1方式2\\n    PCON=0x00;      // SMOD=0，不倍增\\n    TH1=0xFD;\\n    TL1=0xFD;\\n    TI=0;\\n    TR1=1;\\n    for(i=0;i<10;i++)\\n    {\\n        SBUF=DATA[i];\\n        while(TI==0);\\n        TI=0;\\n        // Delay_ms(100); 题目/评分标准给出的可选间隔\\n    }\\n    while(1) { }\\n}",steps:["设置 SCON=40H，串口方式1。","设置 TMOD=20H，T1方式2。","设置 PCON=00H，TH1=TL1=FDH。","启动 T1：TR1=1。","循环发送 DATA[i] 到 SBUF。","查询 TI，发送完成后软件清零 TI。"],source:"作业5答案及评分标准；第8章课件"},
+{id:"serialreceive",cat:"串行通信",title:"串口查询接收流程与 RI 标志",hw:"课件第8章",type:"简答题 / 编程模板",question:"80C51 采用查询方式接收串口数据时，程序如何判断接收完成并读取数据？",conclusion:"查询 RI；RI=1 表示一帧接收完成，读取 SBUF 后由软件清 RI。",brief:"先设置 SCON=50H 允许接收；循环查询 RI；RI=1 时读 SBUF 保存数据，并清 RI。",full:"（1）SCON=0x50，设置串口方式1并置 REN=1，允许接收。\n（2）接收前可将 RI 清零。\n（3）循环查询 RI 标志。\n（4）RI=1 表示一帧数据接收完成，从 SBUF 读取数据。\n（5）由软件将 RI 清零，等待下一帧数据。\n注意：硬件接收完成会置 RI，但不会自动清除 RI。",code:"SCON=0x50;   // 方式1，允许接收\\nRI=0;\\nwhile(1)\\n{\\n    if(RI)\\n    {\\n        RI=0;\\n        dat=SBUF;  // 读取接收数据\\n    }\\n}",steps:["配置 SCON=50H，允许接收。","查询 RI 是否置1。","RI=1 时读取 SBUF。","软件清 RI，等待下一帧。"],source:"第8章课件 8.2.1、8.2.3"},
+{id:"admetrics",cat:"AD/DA接口",title:"A/D 转换器两个重要指标与量化误差",hw:"作业5",type:"计算题 / 简答题",question:"A/D 转换器两个最重要的指标是什么？8位 ADC，输入范围0～5V，求量化绝对误差和相对误差。",conclusion:"两个重要指标为转换时间（或转换速率）和分辨率。8位、0～5V：绝对量化误差=±9.766mV；相对量化误差=±0.195%。",brief:"分辨率 Δ=5000mV/256；量化误差按半个 LSB：绝对误差=½×5000/256=9.766mV；相对误差=½×1/256×100%=0.195%。",full:"A/D 转换器两个最重要指标：\n（1）转换时间或转换速率：转换时间是完成一次 A/D 转换所需要的时间，其倒数为转换速率。\n（2）分辨率：输出数字量变化一个最低有效位 LSB 时，对应输入模拟量的最小变化量。分辨率 Δ=VFS/2ⁿ。\n本题 n=8，满量程 VFS=5V=5000mV。\n绝对量化误差=½×5000/256=9.765625mV≈9.766mV。\n相对量化误差=½×1/256×100%=0.1953125%≈0.195%。",steps:["先写转换时间/转换速率和分辨率两个指标。","计算分辨率：5000/256 mV。","量化绝对误差取半个 LSB。","相对误差按半个 LSB 与满量程之比计算，并换算为百分数。"],source:"作业5答案及评分标准；第10章课件"},
+{id:"adc0809",cat:"AD/DA接口",title:"ADC0809 结构、引脚与通道选择",hw:"作业5",type:"简答题",question:"简述 ADC0809 的主要特点、通道选择和控制引脚功能。",conclusion:"ADC0809 是8位逐次逼近式 ADC，具有8路模拟输入；C、B、A选择 IN0～IN7，START启动转换，EOC表示转换状态，OE允许数据输出。",brief:"ADC0809：8位、8通道、逐次逼近式，典型转换时间约100μs（时钟640kHz）。CBA=000～111选择 IN0～IN7；D0～D7输出转换结果。",full:"ADC0809 是典型的逐次逼近式 8 位 A/D 转换器，具有 8 个模拟量输入通道。\n主要引脚：IN0～IN7 为模拟输入；D0～D7 为 8 位数字输出；C、B、A 为通道地址选择输入，000～111 分别对应 IN0～IN7；START 为启动转换信号；EOC 为转换结束信号；OE 为输出允许端；CLK 为时钟输入；VR(+)和 VR(-)为参考电压输入。\n课件给出的典型条件：时钟频率 640kHz 时，转换时间约100μs；模拟输入范围0～+5V。",steps:["先写 ADC0809 的类型、位数和通道数。","写 C、B、A 与 IN0～IN7 的对应关系。","写 START、EOC、OE、CLK 的功能。","最后写 D0～D7 输出转换结果。"],source:"第10章课件 ADC0809 芯片及接口"},
+{id:"adcflow",cat:"AD/DA接口",title:"ADC0809 的 A/D 采样转换流程",hw:"作业5",type:"简答题 / 编程题",question:"采用 ADC0809 采集模拟量，说明从选择通道到读取转换结果的流程。",conclusion:"选择通道并锁存地址→启动转换→等待 EOC 转换完成→使能 OE→读取数字量→标度变换。",brief:"设置 CBA 选通输入通道；给 START/ALE 启动转换；等待 EOC 指示完成；OE 有效后读取 D0～D7；按传感器量程进行标度变换。",full:"ADC0809 采样流程：\n（1）设置通道地址 C、B、A，选择对应模拟输入通道。\n（2）通过 ALE 锁存通道地址，并向 START 输入启动信号，开始 A/D 转换。\n（3）等待转换结束。EOC 可接 I/O 口采用查询方式，也可接 INT0/INT1 采用中断方式；也可采用定时方式，但等待时间应大于转换时间。\n（4）转换完成后使 OE 有效，打开三态输出锁存器。\n（5）读取 D0～D7 的 8 位转换结果。\n（6）根据传感器输入与物理量之间的线性关系进行标度变换。",steps:["选择模拟输入通道，设置 CBA。","锁存通道地址并启动转换。","查询 EOC 或等待中断。","转换完成后使 OE 有效。","读取 8 位数字量。","按题目给出的量程关系换算成实际物理量。"],source:"第10章课件 ADC0809 接口；作业5温度检测题"},
+{id:"temp800",cat:"AD/DA接口",title:"ADC0809：0～5V 对应 0～800℃ 的温度换算",hw:"作业5",type:"计算题 / 编程题",question:"ADC0809 的 IN0 输入传感器信号，0～5V 线性对应 0～800℃，将采集到的温度值存入 Temp。",conclusion:"8位转换结果 D 对应温度 Temp≈D×800/255（℃）；先读取 ADC 数字量，再按线性比例换算。",brief:"0V→0℃，5V→800℃。若 ADC 数字量 D 的满量程为255，则 Temp=D×800/255。",full:"题目给定传感器输出 0～5V 线性对应 0～800℃。\nADC0809 为 8 位转换器，数字量 D 的范围为 0～255。\n按线性关系：Temp = D/255 × 800 = D×800/255（℃）。\n作业5评分标准给出了地址定义和中断服务程序的框架，但未完整给出最终 Temp 计算代码。这里的比例式是根据题目给定的线性关系推导得到。课件中出现的 1.9607843 是另一示例的比例系数，不应直接用于 0～800℃ 这道题。",code:"/* 读取到 ADC0809 的 8 位结果 D 后 */\\nunsigned char D;\\nfloat Temp;\\nTemp = (float)D * 800.0 / 255.0;\\n/* 作业5的程序框架：\\n   Initial() 中初始化 INT0 并启动 AD；\\n   INT0 服务程序中读取结果、标度变换、启动下一次转换。\\n*/",steps:["确认输入量程：0～5V；输出物理量：0～800℃。","确认 ADC0809 为8位，数字量范围0～255。","建立线性比例：Temp/800=D/255。","整理得 Temp=D×800/255。","程序中先读转换结果，再进行浮点标度变换。"],source:"作业5题干与答案框架；第10章 ADC0809 课件",warning:"作业5评分标准未给出完整的温度换算程序；此处仅按题目明确的线性对应关系推导比例式。课件示例系数 1.9607843 对应其他量程，不能照搬。"},
+{id:"dac",cat:"AD/DA接口",title:"D/A 转换原理、指标与输出方式",hw:"课件第10章",type:"简答题",question:"简述 D/A 转换器的工作原理及主要技术指标。",conclusion:"D/A 将数字量转换成与之成正比的模拟电压或电流；主要指标包括分辨率、转换误差、建立时间、线性度和温度系数。",brief:"数字代码控制模拟开关，各位对应权重经电阻网络加权求和，再由运算放大器输出模拟量。指标：分辨率、转换误差、建立时间、线性度、温度系数。",full:"D/A 转换是将数字量转换为模拟量的过程，D/A 转换器通常简称 DAC。\n工作原理：计算机输出的数字信号先送入数据锁存器；数字代码控制模拟电子开关；各位数字量经电阻网络按权值转换为电流并加权求和；再经运算放大器转换为输出电压。\n主要技术指标：\n（1）分辨率：输入数字量变化一个最低有效位时，输出模拟量的变化量。\n（2）转换误差：实际输出模拟量与理论输出模拟量之间的差别。\n（3）建立时间：输入数字量变化后，输出达到相应稳定值所需时间。\n（4）线性度：实际转换特性曲线与理想直线之间的最大偏差。\n（5）温度系数：输入不变时，输出模拟电压随温度变化的程度。",steps:["先写 D/A 的定义。","说明数字代码控制模拟开关。","说明电阻网络加权求和并由运放输出。","列出分辨率、转换误差、建立时间、线性度、温度系数。"],source:"第10章课件 10.1"},
+{id:"c51structure",cat:"C51程序设计",title:"C51 程序基本结构与初始化顺序",hw:"课件第4章；作业2、作业4、作业5",type:"编程模板",question:"编写 80C51 C51 程序时，主函数、变量定义、初始化函数和主循环通常如何组织？",conclusion:"包含头文件、类型/变量与引脚定义、初始化函数、main 主函数；main 中先初始化，再进入 while(1) 主循环。",brief:"程序顺序：#include；宏定义/变量/sbit；子函数声明；初始化函数；main() 中调用初始化并进入 while(1)。",full:"C51 程序通常由若干函数组成，每个程序有且只有一个 main 主函数，程序从 main 开始执行。\n考试编程题可按以下结构组织：\n（1）包含头文件，如 #include <reg51.h>。\n（2）定义数据类型宏、变量、数组及 sbit 引脚。\n（3）声明延时、显示、初始化等子函数。\n（4）编写初始化函数，配置端口、定时器、中断或串口。\n（5）main() 调用初始化函数。\n（6）while(1) 中完成循环控制、查询或显示任务。\n（7）若使用中断，另写 interrupt n 中断服务函数。",code:"#include <reg51.h>\\n#define uchar unsigned char\\n#define uint unsigned int\\nsbit LED=P1^0;\\n\\nvoid Init(void);\\nvoid Delay(void);\\n\\nvoid main(void)\\n{\\n    Init();\\n    while(1)\\n    {\\n        // 主循环任务\\n    }\\n}\\n\\nvoid Init(void)\\n{\\n    // 外设与寄存器初始化\\n}",steps:["写头文件和宏定义。","定义变量、数组和 sbit 引脚。","声明子函数。","编写初始化函数。","main 调用初始化并进入 while(1)。","需要中断时，在主函数外编写 interrupt n 服务函数。"],source:"第4章软件基础课件；作业2/4/5标准答案"},
+{id:"c51types",cat:"C51程序设计",title:"C51 常用数据类型、sbit 与 interrupt 写法",hw:"课件第4章",type:"简答题 / 代码模板",question:"说明 C51 中常用数据类型，以及 sbit、sfr、interrupt 关键字的作用。",conclusion:"uchar/unsigned char 为8位无符号数；uint/unsigned int 为16位无符号数；sbit 定义可位寻址变量，sfr 定义8位特殊功能寄存器，interrupt n 定义中断服务函数。",brief:"unsigned char：8位；unsigned int：16位；float：32位。sbit 用于位变量；sfr 用于8位SFR；interrupt n 指定中断号。",full:"课件给出的常用类型：char 为8位有符号字符型；unsigned char 为8位无符号字符型（0～255）；int 为16位有符号整型；unsigned int 为16位无符号整型（0～65535）；long 为32位；float 为32位；bit/sbit 为1位。\n关键字：\n（1）sbit：定义可位寻址变量，例如 sbit LED=P1^0。\n（2）sfr：声明8位特殊功能寄存器。\n（3）sfr16：声明16位特殊功能寄存器。\n（4）interrupt：定义中断服务函数，格式为 void 函数名(void) interrupt 中断号。",code:"#include <reg51.h>\\n#define uchar unsigned char\\n#define uint unsigned int\\nsbit LED=P1^0;\\n\\nvoid exter1(void) interrupt 2\\n{\\n    // 外部中断1服务程序\\n}",steps:["按位数记忆 unsigned char=8位、unsigned int=16位。","记住 sbit 定义可位寻址变量。","记住 sfr 定义8位特殊功能寄存器。","中断函数使用 void 函数名(void) interrupt n。"],source:"第4章课件 4.2、4.4.2"},
+{id:"ioinput",cat:"I/O并行口与显示",title:"I/O 口输入前为什么先写 1？",hw:"课件第5章",type:"简答题",question:"P1～P3 作为输入口使用时，为什么通常要先向端口锁存器写入 1？",conclusion:"P1～P3 为准双向口，输入前先写1，使输出驱动电路截止，端口引脚才能由外部信号控制。",brief:"P1～P3 内部有上拉电阻，输入前先写1，使输出驱动管截止，再读取引脚状态。",full:"P1 口内部具有上拉电阻，属于准双向 I/O 口。作为输入口时，应先向其锁存器写入“1”，使输出驱动电路的 FET 截止，避免输出级影响外部输入信号，然后读取端口引脚状态。P2、P3 作为通用输入口时也遵循准双向口的使用要求。",steps:["判断端口类型：P1～P3 是准双向口。","输入前先向端口写1。","写1使输出驱动电路截止。","再读取引脚上的外部电平。"],source:"第5章课件 P1 端口使用说明"},
+{id:"keydebounce",cat:"I/O并行口与显示",title:"按键为什么需要消抖？",hw:"课件第5章",type:"简答题",question:"机械按键为什么需要消抖？常用的软件消抖方法是什么？",conclusion:"按键机械触点在按下和释放瞬间会产生抖动，可能被误判为多次按键；可采用延时后再次检测的方法消抖。",brief:"按键触点弹跳会使输入电平短时间内多次变化；检测到按下后延时一段时间，再次读取，仍为按下才确认有效。",full:"机械按键在闭合或断开瞬间，触点不会立即稳定，输入电平会在短时间内反复变化，称为抖动。若不消抖，单片机可能将一次按键识别为多次。\n软件消抖：检测到按键按下后，延时约数毫秒，再次读取按键状态；若仍为按下状态，则确认按键有效；等待按键释放后再处理下一次按键。",steps:["说明机械触点会产生短暂抖动。","指出抖动会造成一次按键被识别为多次。","写出延时后再次检测的消抖方法。"],source:"第5章课件复习总结；课件按键应用示例"},
+{"id": "ch1_definition", "cat": "第一章：单片机基础知识", "title": "什么是单片机？", "hw": "第一章课件", "type": "简答题 / 基础题", "question": "根据第一章课件，简述单片机的定义。", "conclusion": "单片机是在一块半导体芯片上集成微处理器、存储器、I/O接口、定时器/计数器和中断系统等功能部件，构成一台完整的微型计算机。", "brief": "单片机将微处理器、存储器、输入/输出接口、定时器/计数器及中断系统等集成在一块半导体芯片上，构成完整的微型计算机。", "full": "单片机是指在一块半导体芯片上，集成了微处理器、存储器、输入/输出接口、定时器/计数器以及中断系统等功能部件，构成一台完整的微型计算机。", "steps": ["先写“集成在一块半导体芯片上”。", "列出主要功能部件：微处理器、存储器、I/O接口、定时器/计数器、中断系统。", "最后写明构成完整的微型计算机。"], "source": "第一章课件第8页"},
+{"id": "ch1_relation", "cat": "第一章：单片机基础知识", "title": "单片机与微型计算机是什么关系？", "hw": "第一章课件", "type": "简答题 / 基础题", "question": "简述单片机与微型计算机的关系，以及微型计算机发展的两个方向。", "conclusion": "单片机是微型计算机发展的一个重要分支，主要面向稳定可靠、小而廉、适合控制领域的应用。", "brief": "微型计算机一方面向高速度、高性能、大容量发展；另一方面向稳定可靠、小而廉、适应各种控制领域的单片机方向发展。单片机是微型计算机发展的重要分支。", "full": "计算机经历电子管、晶体管、集成电路和大规模集成电路四代发展，微型计算机属于第四代计算机。微型计算机主要有两个发展方向：一是向高速度、高性能、大容量的高档微型计算机方向发展；二是向稳定可靠、小而廉、能适应各种控制领域需要的单片机方向发展。因此，单片机是微型计算机发展的一个重要分支，是智能控制系统中实现信息采集与处理的核心工具。", "steps": ["先说明微型计算机发展的两个方向。", "分别写高性能通用计算方向和嵌入式控制方向。", "最后总结：单片机是微型计算机发展的重要分支。"], "source": "第一章课件第10～11页"},
+{"id": "ch1_series", "cat": "第一章：单片机基础知识", "title": "常用单片机系列有哪些？", "hw": "第一章课件", "type": "简答题 / 基础题", "question": "列举第一章课件中介绍的常用单片机系列。", "conclusion": "常见系列包括 MCS-51/8051、AVR、PIC、Motorola、MSP430，以及基于 ARM 核的32位单片机。", "brief": "常用单片机系列：MCS-51及兼容8051系列、Atmel AVR、Microchip PIC、Motorola、TI MSP430、基于ARM核的32位单片机。", "full": "第一章课件列举的常用单片机系列有：\n（1）MCS-51系列及与之兼容的8051系列；\n（2）Atmel公司的AVR系列；\n（3）Microchip公司的PIC系列；\n（4）Motorola公司的单片机；\n（5）TI公司的MSP430系列；\n（6）基于ARM核的32位单片机。", "steps": ["先记住课件列出的六类系列。", "答题时写系列名称即可，不必自行扩展未讲授的型号。"], "source": "第一章课件第12页"},
+{"id": "ch1_8051", "cat": "第一章：单片机基础知识", "title": "MCS-51、8051 与 80C51 有什么关系？", "hw": "第一章课件", "type": "简答题 / 基础题", "question": "简述 MCS-51 系列的推出背景、典型型号，以及 80C51 兼容产品的由来。", "conclusion": "MCS-51由Intel于1980年推出，8051是其典型型号；后来Intel授权其他厂商生产兼容产品，常称为80C51系列。", "brief": "Intel于1980年推出MCS-51系列，典型型号有8051、8751、8031、8032、8052等。20世纪80年代中期，Intel将核心技术授权给其他厂商，相关兼容产品常称为80C51系列。", "full": "（1）MCS-51系列单片机是美国Intel公司于1980年推出的产品。\n（2）典型型号包括8051、8751、8031、8032、8052等，其中8051最具代表性。\n（3）20世纪80年代中期，Intel将MCS-51核心技术授权给Atmel、Philips、STC、Siemens、Winbond等厂商。\n（4）这些厂商生产的产品与MCS-51指令系统兼容，系统结构与8051相同，课件中常称为80C51系列。", "steps": ["写出生产厂商和推出时间：Intel，1980年。", "列出代表型号：8051、8751、8031、8032、8052。", "说明后续授权与兼容关系。", "总结80C51是与MCS-51/8051指令系统兼容的一类产品称呼。"], "source": "第一章课件第13～14页"},
+{"id": "ch1_stcname", "cat": "第一章：单片机基础知识", "title": "STC89C52RC 40C-PDIP40 型号如何理解？", "hw": "第一章课件", "type": "简答题 / 型号识别", "question": "根据第一章课件，解释 STC89C52RC 40C-PDIP40 中主要字段的含义。", "conclusion": "STC表示生产厂商；8051表示内核；52表示8KB程序存储器；RC表示512B RAM；40表示最高工作频率可到40MHz；C表示商业级；PDIP40表示40引脚双列直插封装。", "brief": "按课件命名规则：STC为厂家，8051为内核，9表示Flash E²PROM，S表示支持ISP在线编程，52表示8KB ROM，RC表示512B RAM，40表示可到40MHz，C表示商业级，PDIP40表示40引脚双列直插封装。", "full": "以课件给出的 STC89C52RC 40C-PDIP40 为例：\n（1）STC：芯片生产厂家为STC。\n（2）8051：采用8051内核。\n（3）9：芯片内程序存储器为Flash E²PROM。\n（4）S：若型号中含S，表示芯片含可串行下载功能的Flash存储器，具有ISP在线编程功能；本示例型号为89C52RC，不含该S字段。\n（5）52：程序存储器ROM为8KB。\n（6）RC：数据存储器RAM为512B。\n（7）40：工作频率可到40MHz。\n（8）C：商业级，课件给出的工作温度范围为0℃～70℃。\n（9）PDIP40：40个引脚的双列直插式封装。", "steps": ["按型号从左到右分段解释。", "先识别厂家和内核，再识别程序存储器、RAM。", "最后解释频率、温度等级和封装。", "注意：只有型号中出现S字段时，才写ISP在线编程。"], "source": "第一章课件第16页", "warning": "以上字段解释按课件第16页的命名示例整理；具体型号仍应以对应芯片数据手册为准。"},
+{"id": "ch1_application", "cat": "第一章：单片机基础知识", "title": "单片机有哪些典型应用领域？", "hw": "第一章课件", "type": "简答题 / 基础题", "question": "列举单片机的典型应用领域，并各举一例。", "conclusion": "典型领域包括工业自动化、智能仪器仪表、消费类电子产品、通信设备和武器装备。", "brief": "（1）工业自动化：数据采集、测控技术；（2）智能仪器仪表：数字示波器、数字万用表；（3）消费电子：洗衣机、空调、微波炉；（4）通信：调制解调器、程控交换、手机；（5）武器装备：飞机、军舰、导弹等。", "full": "单片机属于数字控制类芯片，应用领域广泛，典型应用包括：\n（1）工业自动化：数据采集、测控技术、数控设备。\n（2）智能仪器仪表：数字示波器、数字信号源、数字万用表等。\n（3）消费类电子产品：洗衣机、电冰箱、空调、电视机、微波炉、IC卡及汽车电子设备等。\n（4）通信方面：调制解调器、程控交换技术、手机等。\n（5）武器装备：飞机、军舰、坦克、导弹、航天飞机及制导设备等。", "steps": ["按课件五类领域分点作答。", "每类至少给出一个例子。", "最后可总结单片机广泛用于数字控制和信息采集处理。"], "source": "第一章课件第17～24页"},
+{"id": "ch1_baseweight", "cat": "第一章：单片机基础知识", "title": "什么是数制的基和权？B、H、D 分别表示什么？", "hw": "第一章课件", "type": "简答题 / 基础题", "question": "说明二进制、十进制、十六进制的基本特点，并解释数制的基、权和标识符。", "conclusion": "基是计数制中数码的个数；权是每一位所具有的位权。B表示二进制，H表示十六进制，D表示十进制，D可以省略。", "brief": "二进制有0、1两个数码，逢二进一；十进制有0～9十个数码，逢十进一；十六进制有0～9、A～F十六个数码，逢十六进一。B/H/D分别表示二/十六/十进制。", "full": "（1）二进制：有0、1两个数码，逢二进一，各位权是2的整数次幂，标识符为B。\n（2）十进制：有0～9十个数码，逢十进一，各位权是10的整数次幂，标识符为D，D可以省略。\n（3）十六进制：有0～9、A～F共16个数码，逢十六进一，各位权是16的整数次幂，标识符为H。\n数制的基：计数制中所具有的数码个数。\n数制的权：计数制中每一位所具有的值，即该位对应基数的幂。", "steps": ["先分别写三种数制的数码和进位规则。", "再写标识符：B、D、H。", "最后分别定义基和权。"], "source": "第一章课件第26～34页"},
+{"id": "ch1_to_decimal", "cat": "第一章：单片机基础知识", "title": "二进制数、十六进制数如何转换为十进制数？", "hw": "第一章课件", "type": "计算题", "question": "说明二进制数和十六进制数转换为十进制数的方法，并完成课件示例。", "conclusion": "采用按权展开法：每一位数码乘以对应位权，再将各项相加。", "brief": "二进制按2的幂展开，十六进制按16的幂展开；小数点左侧从0次幂向高位递增，右侧从−1次幂向下递减。", "full": "方法：将各位数码乘以对应位权，再求和。\n示例1：10101.1011B = 1×2⁴ + 1×2² + 1×2⁰ + 1×2⁻¹ + 1×2⁻³ + 1×2⁻⁴ = 21.6875。\n示例2：0F3DH = F×16² + 3×16¹ + D×16⁰ = 15×256 + 3×16 + 13 = 3901。", "steps": ["识别数制基数：二进制用2，十六进制用16。", "从小数点向左依次标0、1、2……次幂；向右标−1、−2……次幂。", "各位数码乘以对应位权。", "把所有乘积相加，写出十进制结果。"], "source": "第一章课件第28～36页"},
+{"id": "ch1_decimal_to_binary", "cat": "第一章：单片机基础知识", "title": "十进制数如何转换为二进制数？", "hw": "第一章课件", "type": "计算题", "question": "说明十进制数整数部分和小数部分转换为二进制数的方法，并完成 19.625 的转换。", "conclusion": "整数部分采用除2取余、余数倒序；小数部分采用乘2取整、整数部分正序。19.625D = 10011.101B。", "brief": "整数除2取余，最后余数倒序排列；小数乘2取整，按整数部分出现顺序排列。19的二进制为10011，0.625的二进制为0.101。", "full": "整数部分：19÷2反复取余，余数从下向上读，得到19D=10011B。\n小数部分：0.625×2=1.250，取整数1；0.250×2=0.500，取整数0；0.500×2=1.000，取整数1。按出现顺序读得0.625D=0.101B。\n因此：19.625D=10011.101B。", "steps": ["将整数部分19与小数部分0.625分开。", "整数部分连续除2取余，余数倒序读。", "小数部分连续乘2取整，整数部分正序读。", "将整数和小数两部分拼接。"], "source": "第一章课件第37～38页"},
+{"id": "ch1_binary_hex", "cat": "第一章：单片机基础知识", "title": "二进制数与十六进制数如何互相转换？", "hw": "第一章课件", "type": "计算题", "question": "说明二进制与十六进制的互换方法，并完成课件示例。", "conclusion": "每4位二进制数对应1位十六进制数；二进制转十六进制时从小数点向两侧每4位分组，不足补0；十六进制转二进制时每位展开为4位。", "brief": "二进制→十六进制：从小数点向左、向右分别每4位一组，不足补0，再查表转换。十六进制→二进制：每个十六进制数码替换为对应4位二进制。", "full": "（1）二进制转十六进制：从小数点开始，整数部分向左每4位分组，小数部分向右每4位分组；不足4位时补0，再将每组转换为一位十六进制数。\n课件示例：1111000111.100101B = 0011 1100 0111.1001 0100B = 3C7.94H。\n（2）十六进制转二进制：每一位十六进制数分别转换成4位二进制数。\n课件示例：2FB5H = 0010 1111 1011 0101B = 10111110110101B。", "steps": ["记住4位二进制对应1位十六进制。", "二进制转十六进制：以小数点为界向两边分组。", "不足4位时补0，不改变数值。", "十六进制转二进制：逐位查4位对应表。"], "source": "第一章课件第34、39页"},
+{"id": "ch1_conversion_order", "cat": "第一章：单片机基础知识", "title": "数制转换题的考场书写模板", "hw": "第一章课件", "type": "考场书写模板", "question": "考试要求完成二进制、十进制、十六进制之间的转换时，如何组织计算过程？", "conclusion": "先标明转换方向和方法，再列出按权展开或逐步除/乘的过程，最后写带数制标识符的结果。", "brief": "二进制/十六进制转十进制：按权展开→求和；十进制转二进制：整数除2取余倒序、小数乘2取整正序；二进制与十六进制互转：4位分组。", "full": "【二进制/十六进制→十进制】\n方法：按权展开。\n过程：原数 = 各位数码×对应位权之和。\n结果：写出十进制数（可标D）。\n\n【十进制→二进制】\n整数部分：连续除2取余，余数倒序排列。\n小数部分：连续乘2取整，整数部分正序排列。\n结果：整数与小数两部分拼接，标B。\n\n【二进制↔十六进制】\n以小数点为界每4位分组，不足补0；逐组查表转换。\n结果：写出十六进制H或二进制B。", "steps": ["先圈出题目要求的目标进制。", "根据转换方向选择唯一对应的方法。", "过程必须写出关键展开式、余数或分组。", "最终结果写清B、D或H，避免只写裸数字。"], "source": "第一章课件第26～39页"}
 ];
+
 const STORE_KEY="mcu_exam_station_public_demo_v1";
 let store=loadStore();
 let currentCategory="全部题目", currentHomework="全部", currentQuestionId=QUESTIONS[0].id;
@@ -237,8 +527,8 @@ function addSubject(){const name=prompt("请输入新科目名称：");if(!name|
 initSubjectSelect();renderAll();alert("科目已添加。点击“自定义题目”即可为该科目录入题目。")}
 function addCustomQuestion(){if(currentSubject==="51"){const ok=confirm("要在 51 单片机科目中添加自定义题目吗？");if(!ok)return}const title=prompt("题目名称：");if(!title)return;const conclusion=prompt("只看结论（一句话）：")||"请补充结论";const brief=prompt("简要过程：")||conclusion;const full=prompt("完整答案：")||brief;const id="custom_"+Date.now();customQuestions.push({id,subjectId:currentSubject,cat:"自定义题目",title,hw:"自定义",type:"自定义",question:title,conclusion,brief,full,steps:["阅读题目要求。","写出核心结论。","补全过程并核对答案。"],source:"用户自定义"});store.customQuestions=customQuestions;saveStore();currentCategory="全部题目";currentHomework="全部";openQuestion(id,false);renderAll()}
 function renderCategories(){const cats=currentSubject==="51"?CATEGORIES.concat(activeQuestions().some(q=>q.cat==="自定义题目")?["自定义题目"]:[]):["全部题目","自定义题目"];$("categoryList").innerHTML=cats.map(c=>`<button class="cat-btn ${c===currentCategory?"active":""}" data-cat="${esc(c)}"><span>${esc(c)}</span><span class="count">${countByCat(c)}</span></button>`).join("");document.querySelectorAll(".cat-btn").forEach(b=>b.onclick=()=>{currentCategory=b.dataset.cat;renderCategories();renderQuestionList()})}
-function renderHomeworkFilters(){const hs=["全部","示例1","示例2","示例3"];$("homeworkFilters").innerHTML=hs.map(h=>`<button class="chip ${h===currentHomework?"active":""}" data-hw="${h}">${h}</button>`).join("");document.querySelectorAll("[data-hw]").forEach(b=>b.onclick=()=>{currentHomework=b.dataset.hw;renderHomeworkFilters();renderQuestionList()})}
-function filteredQuestions(){const term=$("searchInput").value.trim().toLowerCase();return activeQuestions().filter(q=>(currentCategory==="全部题目"||q.cat===currentCategory)&&(currentHomework==="全部"||String(q.hw).includes(currentHomework))&&(!term||(q.title+" "+q.question+" "+q.cat+" "+q.hw+" "+(q.source||"")).toLowerCase().includes(term)))}
+function renderHomeworkFilters(){const hs=["全部","作业1","作业2","作业3","作业4","作业5","课件"];$("homeworkFilters").innerHTML=hs.map(h=>`<button class="chip ${h===currentHomework?"active":""}" data-hw="${h}">${h}</button>`).join("");document.querySelectorAll("[data-hw]").forEach(b=>b.onclick=()=>{currentHomework=b.dataset.hw;renderHomeworkFilters();renderQuestionList()})}
+function filteredQuestions(){const term=$("searchInput").value.trim().toLowerCase();return activeQuestions().filter(q=>(currentCategory==="全部题目"||q.cat===currentCategory)&&(currentHomework==="全部"||(currentHomework==="课件"?String(q.hw).includes("课件"):String(q.hw).includes(currentHomework)))&&(!term||(q.title+" "+q.question+" "+q.cat+" "+q.hw+" "+(q.source||"")).toLowerCase().includes(term)))}
 function renderQuestionList(){const qs=filteredQuestions();$("filterCount").textContent=qs.length+" 题";const host=$("questionList");if(!host)return;host.innerHTML=qs.length?qs.map(q=>`<div class="qrow"><button data-qopen="${esc(q.id)}">${esc(q.title)}<small>${esc(q.hw||"自定义")} · ${esc(q.type||"题目")}</small></button></div>`).join(""):'<div class="tiny muted" style="padding:8px">没有匹配题目</div>';host.querySelectorAll("[data-qopen]").forEach(b=>b.onclick=()=>openQuestion(b.dataset.qopen,false))}
 function openQuestion(id,start=false){currentQuestionId=id;revealedStep=0;sessionStarted=false;if(start)startPractice();renderDetail();renderQuestionListPanel()}
 function renderQuestionListPanel(){renderQuestionList()}
@@ -250,7 +540,7 @@ $("questionDetail").innerHTML=`
  <div class="answer-box"><div class="answer-top"><strong>参考答案 · ${modeName}</strong><span class="tiny muted">可切换顶部答案深度</span></div><div class="answer-content">${esc(ans).split("\n").map(x=>`<p>${x||"&nbsp;"}</p>`).join("")}${q.code&&currentMode!=="conclusion"?`<div class="tiny muted" style="margin-top:12px">参考程序 / 代码框架</div><pre class="codebox">${esc(q.code).replace(/\\n/g,"\n")}</pre>`:""}${q.warning?`<div class="note">⚠ ${esc(q.warning)}</div>`:""}</div></div>
  <div class="step-area"><div class="step-head"><div><b>分步作答</b><div class="tiny muted">先自己写，再逐步展开核对</div></div><button class="btn secondary small" id="startStepBtn">${sessionStarted?"重新开始本题":"开始练习"}</button></div><div id="stepContent">${renderSteps(q)}</div></div>
  <div class="question-actions"><button class="btn success" id="masterBtn">✓ 我掌握了</button><button class="btn danger" id="wrongBtn">${store.wrong.includes(q.id)?"已在错题本 · 再标记":"标记为错题"}</button><button class="btn plain" id="prevBtn">上一题</button><button class="btn plain" id="nextInBtn">下一题</button></div>
- <div class="source-line">资料来源：${esc(q.source||"自定义内容")}。公开示例用于展示交互流程，具体知识请核对权威资料。</div>`;
+ <div class="source-line">资料来源：${esc(q.source||"自定义内容")}。答题优先按对应作业题干及评分标准书写。</div>`;
 $("copyAnswerBtn").onclick=()=>copyText(q.title+"\n"+ans+(q.code?"\n"+q.code.replace(/\\n/g,"\n"):""));
 $("startStepBtn").onclick=()=>{revealedStep=0;startPractice();renderDetail()};
 $("masterBtn").onclick=()=>markMastered(q);
@@ -269,8 +559,8 @@ function navigateQuestion(dir){const qs=filteredQuestions();const list=qs.length
 function randomQuestion(){const qs=filteredQuestions();const list=qs.length?qs:activeQuestions();if(!list.length)return;let q=list[Math.floor(Math.random()*list.length)];if(list.length>1&&q.id===currentQuestionId)q=list[(list.findIndex(x=>x.id===q.id)+1)%list.length];openQuestion(q.id,true)}
 function renderWrong(){const qs=store.wrong.map(id=>activeQuestions().find(q=>q.id===id)).filter(Boolean);$("wrongList").innerHTML=qs.length?`<div class="question-list">${qs.map(q=>`<div class="qrow"><button data-open="${esc(q.id)}">${esc(q.title)}<small>${esc(q.cat)} · ${esc(q.hw||"自定义")}</small></button><button class="btn secondary small" data-repeat="${esc(q.id)}">重复练习</button><button class="btn plain small" data-remove="${esc(q.id)}">移除</button></div>`).join("")}</div>`:'<div class="empty"><div class="emoji">✓</div><b>错题本还是空的</b><div class="tiny">遇到不熟悉的题目，点击“标记为错题”即可收集。</div></div>';
 document.querySelectorAll("[data-open]").forEach(b=>b.onclick=()=>{openQuestion(b.dataset.open);setView("bank")});document.querySelectorAll("[data-repeat]").forEach(b=>b.onclick=()=>{openQuestion(b.dataset.repeat,true);setView("bank")});document.querySelectorAll("[data-remove]").forEach(b=>b.onclick=()=>{store.wrong=store.wrong.filter(x=>x!==b.dataset.remove);saveStore();renderWrong();renderSummary()})}
-function renderProgress(){const qs=activeQuestions(),seen=store.seen.filter(id=>qs.some(q=>q.id===id));const totalAttempts=qs.reduce((s,q)=>s+(store.attempts[q.id]||0),0);const totalCorrect=qs.reduce((s,q)=>s+(store.correct[q.id]||0),0);$("pAttempts").textContent=totalAttempts;$("pCorrect").textContent=totalCorrect;$("pAccuracy").textContent=(totalAttempts?Math.round(totalCorrect/totalAttempts*100):0)+"%";$("pCoverage").textContent=(qs.length?Math.round(seen.length/qs.length*100):0)+"%";$("studyAdvice").textContent=store.wrong.some(id=>qs.some(q=>q.id===id))?"建议优先进入错题本，重新练习尚未掌握的题目。":seen.length?"继续抽题，优先覆盖尚未练习的知识点。":"先选择一组公开示例题，开始第一轮练习。";
-const cats=[...new Set(qs.map(q=>q.cat))];$("categoryProgress").innerHTML=cats.map(c=>{const catQs=qs.filter(q=>q.cat===c),a=catQs.reduce((s,q)=>s+(store.attempts[q.id]||0),0),co=catQs.reduce((s,q)=>s+(store.correct[q.id]||0),0),p=a?Math.round(co/a*100):0;return `<div class="progress-row"><span>${esc(c)}</span><div class="bar"><span style="width:${p}%"></span></div><b>${p}%</b></div><div class="tiny muted" style="margin:-8px 0 8px 157px">练习 ${a} 次 · 标记掌握 ${co} 次</div>`}).join("")||'<div class="empty">暂无练习数据</div>';
+function renderProgress(){const qs=activeQuestions(),seen=store.seen.filter(id=>qs.some(q=>q.id===id));const totalAttempts=qs.reduce((s,q)=>s+(store.attempts[q.id]||0),0);const totalCorrect=qs.reduce((s,q)=>s+(store.correct[q.id]||0),0);$("pAttempts").textContent=totalAttempts;$("pCorrect").textContent=totalCorrect;$("pAccuracy").textContent=(totalAttempts?Math.round(totalCorrect/totalAttempts*100):0)+"%";$("pCoverage").textContent=(qs.length?Math.round(seen.length/qs.length*100):0)+"%";$("studyAdvice").textContent=store.wrong.some(id=>qs.some(q=>q.id===id))?"建议优先进入错题本，按题目重新作答；定时器初值、中断号、串口标志位和步进电机间隔值适合集中复练。":seen.length?"继续随机抽题，优先覆盖尚未练习的知识点。":"先从老师作业1～5的简答题和计算题开始，完成一轮基础练习。";
+const cats=[...new Set(qs.map(q=>q.cat))];$("categoryProgress").innerHTML=cats.map(c=>{const catQs=qs.filter(q=>q.cat===c),a=catQs.reduce((s,q)=>s+(store.attempts[q.id]||0),0),co=catQs.reduce((s,q)=>s+(store.correct[q.id]||0),0),p=a?Math.round(co/a*100):0;return `<div class="progress-row"><span>${esc(c)}</span><div class="bar"><span style="width:${p}%"></span></div><b>${p}%</b></div><div class="tiny muted" style="margin:-8px 0 8px 157px">练习 ${a} 次 · 答对 ${co} 次</div>`}).join("")||'<div class="empty">暂无练习数据</div>';
 const mastered=store.mastered.map(id=>allQuestions().find(q=>q.id===id)).filter(q=>q&&qs.includes(q));$("masteredCountLabel").textContent=mastered.length+" 题";$("masteredList").innerHTML=mastered.length?mastered.map(q=>`<div class="qrow"><button data-master-open="${esc(q.id)}">${esc(q.title)}<small>${esc(q.cat)}</small></button><span class="tag" style="background:#e8f7f0;color:#16845b">已掌握</span></div>`).join(""):'<div class="tiny muted">尚未标记掌握的题目。</div>';document.querySelectorAll("[data-master-open]").forEach(b=>b.onclick=()=>{openQuestion(b.dataset.masterOpen);setView("bank")})}
 function renderSummary(){const qs=activeQuestions();$("statTotal").textContent=qs.length;$("statDone").textContent=store.seen.filter(id=>qs.some(q=>q.id===id)).length;$("statMastered").textContent=store.mastered.filter(id=>qs.some(q=>q.id===id)).length;$("statWrong").textContent=store.wrong.filter(id=>qs.some(q=>q.id===id)).length;const wrongCount=store.wrong.filter(id=>qs.some(q=>q.id===id)).length;$("wrongNavCount").textContent=wrongCount?`(${wrongCount})`:""}
 function renderAll(){renderSummary();renderCategories();renderHomeworkFilters();renderQuestionList();renderDetail();renderWrong();if(currentView==="progress")renderProgress()}
@@ -282,6 +572,65 @@ $("randomBtn").onclick=randomQuestion;$("nextBtn").onclick=()=>navigateQuestion(
 $("addSubjectBtn").onclick=addSubject;$("addQuestionBtn").onclick=addCustomQuestion;$("subjectSelect").onchange=e=>{currentSubject=e.target.value;currentCategory="全部题目";currentHomework="全部";const q=activeQuestions()[0];currentQuestionId=q?q.id:"";renderAll()};
 $("clearWrongBtn").onclick=()=>{if(confirm("确定清空当前错题本吗？")){const ids=new Set(activeQuestions().map(q=>q.id));store.wrong=store.wrong.filter(id=>!ids.has(id));saveStore();renderWrong();renderSummary();if(currentView==="progress")renderProgress()}};
 $("subjectSelect").addEventListener("change",()=>{renderProgress()});
+document.querySelectorAll("[data-copy-template]").forEach(btn=>{
+    btn.addEventListener("click",()=>{
+        const el=document.getElementById(btn.dataset.copyTemplate);
+        if(el) copyText(el.innerText || el.textContent || "");
+    });
+});
+function parseBaseNumber(raw, base){
+    let str=String(raw).trim().replace(/_/g,"");
+    if(!str) throw new Error("请输入数值。");
+    if(![2,10,16].includes(base)) throw new Error("不支持的进制。");
+    if(str.length>256) throw new Error("输入过长（最多256个字符）。");
+    let sign=1n;
+    if(str[0]==="-"){sign=-1n;str=str.slice(1);}
+    const parts=str.split(".");
+    if(parts.length>2 || !parts.some(Boolean)) throw new Error("数值格式不正确。");
+    const valid=base===2?/^[01]+$/:base===16?/^[0-9a-fA-F]+$/:/^\d+$/;
+    const intPart=parts[0]||"",fracPart=parts[1]||"";
+    if((intPart&&!valid.test(intPart))||(fracPart&&!valid.test(fracPart))) throw new Error("输入中包含当前进制不允许的数字。");
+    const b=BigInt(base);
+    function digitsToBigInt(s){let n=0n;for(const ch of s)n=n*b+BigInt(parseInt(ch,base));return n}
+    const denominator=b**BigInt(fracPart.length);
+    return {numerator:sign*(digitsToBigInt(intPart)*denominator+digitsToBigInt(fracPart)),denominator};
+}
+function formatBase(value, base, maxDigits=10){
+    const b=BigInt(base),den=value.denominator;
+    let num=value.numerator;
+    const sign=num<0n?"-":"";
+    if(num<0n)num=-num;
+    let integer=num/den,remainder=num%den;
+    let digits="";
+    for(let i=0;i<maxDigits&&remainder;i++){
+        remainder*=b;
+        digits+="0123456789ABCDEF"[Number(remainder/den)];
+        remainder%=den;
+    }
+    const fractional=digits.replace(/0+$/,"");
+    return sign+integer.toString(base).toUpperCase()+(fractional?"."+fractional:"");
+}
+function convertBase(){
+    const result=document.getElementById("baseResults");
+    if(!result)return;
+    try{
+        const base=Number(document.getElementById("baseFrom").value);
+        const raw=document.getElementById("baseInput").value;
+        const value=parseBaseNumber(raw,base);
+        result.innerHTML=`<b>转换结果</b><div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px;margin-top:8px"><div class="formula"><h4>二进制 B</h4><div class="mathline">${formatBase(value,2)}</div></div><div class="formula"><h4>十进制 D</h4><div class="mathline">${formatBase(value,10)}</div></div><div class="formula"><h4>十六进制 H</h4><div class="mathline">${formatBase(value,16)}</div></div></div><div class="tiny muted" style="margin-top:8px">说明：小数部分最多显示10位；循环小数按当前显示精度截取。</div>`;
+    }catch(e){
+        result.textContent="转换失败："+e.message;
+    }
+}
+const convertBtn=document.getElementById("convertBaseBtn");
+if(convertBtn)convertBtn.addEventListener("click",convertBase);
+const exampleBtn=document.getElementById("exampleBaseBtn");
+if(exampleBtn)exampleBtn.addEventListener("click",()=>{
+    document.getElementById("baseInput").value="19.625";
+    document.getElementById("baseFrom").value="10";
+    convertBase();
+});
+
 
 initSubjectSelect();renderAll();
 </script>
