@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#f4f7fb">
-<title>51单片机 · 考试复习站（第一章与答题模板增强版）</title>
+<title>51单片机 · 考试复习站（题库、答题模板与往年试卷）</title>
 <style>
 :root{--bg:#f4f7fb;--panel:#fff;--ink:#17243b;--muted:#68778e;--line:#e4eaf2;--blue:#315ee8;--blue2:#eaf0ff;--green:#16845b;--greenbg:#e8f7f0;--red:#c54c4c;--redbg:#fff0f0;--amber:#a96813;--amberbg:#fff5e5;--shadow:0 10px 28px rgba(28,48,82,.07);--radius:18px}
 *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.65 "Microsoft YaHei","PingFang SC",system-ui,sans-serif}
@@ -24,6 +24,11 @@ button,input,select{font:inherit}button{cursor:pointer}.shell{max-width:1440px;m
 .template-detail .codebox{margin:9px 0}
 .answer-checklist{padding-left:20px;margin:8px 0;color:#46566d;font-size:13px}
 .answer-checklist li{margin:8px 0}
+
+.exam-intro h2{margin:0 0 9px;font-size:23px}.exam-intro p{margin:8px 0;color:#46566d}
+.exam-notice{padding:13px 16px;border:1px solid #f2d3a4;background:var(--amberbg);border-radius:12px;color:#754e17;margin:16px 0;font-size:14px}
+.exam-nav{display:flex;gap:9px;flex-wrap:wrap;margin-top:16px}.exam-nav a{display:inline-flex;align-items:center;justify-content:center;text-decoration:none;background:var(--blue2);color:var(--blue);border-radius:10px;padding:8px 12px;font-size:14px;font-weight:700}.exam-nav a:hover{background:#dbe5ff}
+.exam-question{scroll-margin-top:18px}.exam-question-head{display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap}.exam-question h3{font-size:19px;margin:0 0 7px}.exam-question h4{font-size:16px;margin:0 0 7px}.exam-question p{margin:5px 0 12px;font-size:15px;line-height:1.8}.exam-subquestion{border-top:1px solid var(--line);padding:18px 0}.exam-subquestion:first-of-type{margin-top:12px}.exam-subquestion:last-child{padding-bottom:0}.exam-answer{border:1px solid var(--line);border-radius:10px;background:#fbfcff;padding:10px 14px;margin:11px 0}.exam-answer summary{cursor:pointer;color:var(--blue);font-weight:750;min-height:24px}.exam-answer[open] summary{margin-bottom:11px}.exam-answer .table-wrap{margin-bottom:9px}.exam-answer .codebox{font-size:14px;line-height:1.6;white-space:pre;overflow-x:auto}.exam-caveat{color:#79531f!important;font-size:14px!important}.exam-missing{background:var(--amberbg);border-color:#f2d3a4}
 
 @media(max-width:980px){.workspace{grid-template-columns:1fr}.sidebar{position:static}.category-list{grid-template-columns:repeat(2,1fr)}.formula-grid{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:640px){.shell{padding:14px 12px 35px}.topbar{align-items:flex-start;flex-direction:column}.top-actions{width:100%;flex-wrap:wrap}.top-actions .select{flex:1}.hero{padding:20px;border-radius:18px}.hero h2{font-size:21px}.hero-mark{display:none}.stats-strip{grid-template-columns:repeat(2,1fr);gap:8px}.stat{padding:11px}.stat .value{font-size:21px}.maincard{padding:15px}.question-head h2{font-size:20px}.grid2,.formula-grid{grid-template-columns:1fr}.progress-row{grid-template-columns:105px 1fr 45px}.toolbar{align-items:flex-start}.toolbar-right{width:100%}.mode-switch{width:100%;justify-content:space-between}.mode-switch button{flex:1;padding:7px 4px}.question-actions .btn{flex:1}.nav button{padding:11px 12px}}
@@ -58,6 +63,7 @@ button,input,select{font:inherit}button{cursor:pointer}.shell{max-width:1440px;m
     <button data-view="progress">进度统计</button>
     <button data-view="reference">速查手册</button>
     <button data-view="templates">答题模板</button>
+    <button data-view="past-exam">往年试卷</button>
   </nav>
 
   <section class="view active" id="view-bank">
@@ -452,7 +458,170 @@ void ad_isr(void) interrupt 0
     </div>
   </section>
 
-  <div class="footer">离线单文件学习站 · 学习记录仅保存在当前浏览器 · 可通过编辑 index.html 中的题库数组扩展科目</div>
+  <section class="view" id="view-past-exam" aria-labelledby="pastExamTitle">
+    <div class="panel exam-intro">
+      <div class="eyebrow">按原卷题号整理 · 可复制文字</div>
+      <h2 id="pastExamTitle">2025—2026 学年第一学期 · 微机原理及接口技术 A 卷</h2>
+      <p>天津工业大学机械工程学院 · 满分 100 分 · 闭卷 · 考试时间 100 分钟。</p>
+      <div class="exam-notice"><strong>整理范围：</strong>根据已提供的 PDF 第 1—7/8 页拍屏照片 OCR 并人工核对。原 PDF 第 8 页未收到；电路图无法完整转成文字，相关接线和代码仅按可见内容描述。第一大题未见老师评分答案，下列解答标注为“计算参考”；第二至五大题按可见评分内容整理，非逐字复刻。</div>
+      <nav class="exam-nav" aria-label="跳转试卷题号">
+        <a href="#exam-question-1">第一题 · 简答</a><a href="#exam-question-2">第二题 · LED</a><a href="#exam-question-3">第三题 · 步进电机</a><a href="#exam-question-4">第四题 · ADC0809</a><a href="#exam-question-5">第五题 · 里程计数</a>
+      </nav>
+    </div>
+
+    <article class="panel exam-question" id="exam-question-1">
+      <div class="exam-question-head"><h3>第一题 · 简答题</h3><span class="tag blue">40 分 · 5 小题，每小题 8 分</span></div>
+      <section class="exam-subquestion">
+        <h4>1．数制转换</h4>
+        <p>填写二进制、十进制和十六进制对照表。已知值分别为 54（十进制）、10100101（二进制）、3F（十六进制）、135（十进制）。</p>
+        <details class="exam-answer"><summary>查看计算参考</summary>
+          <div class="table-wrap"><table><thead><tr><th>二进制</th><th>十进制</th><th>十六进制</th></tr></thead><tbody>
+            <tr><td>110110</td><td>54</td><td>36H</td></tr><tr><td>10100101</td><td>165</td><td>A5H</td></tr><tr><td>111111</td><td>63</td><td>3FH</td></tr><tr><td>10000111</td><td>135</td><td>87H</td></tr>
+          </tbody></table></div>
+        </details>
+      </section>
+      <section class="exam-subquestion">
+        <h4>2．中断优先级</h4>
+        <p>IE 寄存器的内容为 0x8F，IP 寄存器的内容为 0x06。按中断优先级先后顺序给出能响应的中断请求名称和中断号。</p>
+        <details class="exam-answer"><summary>查看计算参考</summary><p>IE=8FH：EA=1，INT0、T0、INT1、T1 均允许。IP=06H：T0、INT1 为高优先级，其余两路为低优先级。同级按硬件查询次序，顺序为 <strong>T0（interrupt 1）→ INT1（interrupt 2）→ INT0（interrupt 0）→ T1（interrupt 3）</strong>。这是“同时出现且可响应”时的排序。</p></details>
+      </section>
+      <section class="exam-subquestion">
+        <h4>3．片内 RAM 分区</h4>
+        <p>80C51 系列单片机的片内 RAM 可以分为几个区域？各区的地址范围及特点如何？</p>
+        <details class="exam-answer"><summary>查看计算参考</summary><p>按地址列出：00H—1FH 为四组工作寄存器区；20H—2FH 为位寻址区；30H—7FH 为通用数据存储和堆栈区；80H—FFH 为 SFR 特殊功能寄存器地址区。最后一项是特殊功能寄存器空间，不应简单当成同一块普通 RAM。</p></details>
+      </section>
+      <section class="exam-subquestion">
+        <h4>4．定时器方式与初值</h4>
+        <p>80C51 采用 6 MHz 晶振，求定时器 T0 分别工作在方式 0、方式 1、方式 2 下的定时范围；若定时 312 μs，求方式 2 下 TH0、TL0 初值。</p>
+        <details class="exam-answer"><summary>查看计算参考</summary><p>经典 12T 8051 的机器周期为 12/6 MHz=2 μs。方式 0（13 位）单次溢出可定 2—16384 μs；方式 1（16 位）为 2—131072 μs；方式 2（8 位自动重装）为 2—512 μs。312/2=156 次，256−156=100=64H，故 <code>TH0=0x64; TL0=0x64;</code>。</p></details>
+      </section>
+      <section class="exam-subquestion">
+        <h4>5．波特率与 TH1</h4>
+        <p>什么是波特率？给出 80C51 的波特率计算公式。设一帧含 1 个起始位、8 个数据位、1 个停止位，传输速率为每秒 960 帧，求波特率；晶振 11.0592 MHz，SMOD=1，计算 TH1 初值。</p>
+        <details class="exam-answer"><summary>查看计算参考</summary><p>波特率是串行传输每秒的码元数；此处每帧 10 位，960 帧/秒 × 10 位/帧 = <strong>9600 bit/s</strong>。经典 12T、串口方式 1、定时器 T1 方式 2 时，波特率 = (2<sup>SMOD</sup>/32) × f<sub>osc</sub>/[12 × (256−TH1)]。代入 SMOD=1 得 256−TH1=6，故 <strong>TH1=FAH</strong>（TL1 初值也可设 FAH）。</p></details>
+      </section>
+    </article>
+
+    <div class="exam-notice">以下第二至第五题，卷面说明只要求写程序主体；相关头文件、变量和 <code>void delay_ms(unsigned char ms)</code> 默认已定义。下列代码将拍屏中可见的评分要点规范排版，局部拍摄模糊处以题意补齐，不作为原 PDF 的逐字转录。</div>
+
+    <article class="panel exam-question" id="exam-question-2">
+      <div class="exam-question-head"><h3>第二题 · 8 位 LED 控制</h3><span class="tag blue">10 分</span></div>
+      <p>按图示电路，使用 <code>for</code> 循环使 LED 从状态 1 依次到状态 8：先亮 1 盏，再逐渐累计至亮 8 盏；每个状态保持 100 ms，并不断循环往复。图示 P0 接 LED，低电平点亮。</p>
+      <details class="exam-answer"><summary>查看评分思路与规范化程序</summary>
+        <p>可见评分点：初值 <code>0x7F</code>；循环 8 次；向 P0 送数据；延时 100 ms；每次右移 1 位。为满足“不断循环”，每轮 8 状态开始前需重置初值。</p>
+        <pre class="codebox">void main(void)
+{
+    unsigned char i, led;
+    while (1) {
+        led = 0x7F;                 /* 每轮从第 1 盏重新开始 */
+        for (i = 0; i &lt; 8; i++) {
+            P0 = led;
+            delay_ms(100);
+            led &gt;&gt;= 1;
+        }
+    }
+}</pre>
+        <p class="exam-caveat">注：拍屏评分示例把 <code>led=0x7F</code> 写在外层 <code>while</code> 前；照抄时第二轮可能不能重新显示状态 1。本处按题意把复位放入循环内。</p>
+      </details>
+    </article>
+
+    <article class="panel exam-question" id="exam-question-3">
+      <div class="exam-question-head"><h3>第三题 · 四相八拍步进电机</h3><span class="tag blue">20 分</span></div>
+      <p>灭火机器人的运动控制由 80C51 的 P1.0—P1.3 产生四相八拍控制脉冲（高电平有效）。晶振 12 MHz、输出脉冲频率 1 kHz，采用定时器 T1 方式 2。写控制字数组，补全初始化程序 <code>Initial()</code> 与中断服务程序。</p>
+      <details class="exam-answer"><summary>查看评分思路与规范化程序</summary>
+        <p>照片可核对的控制字为 <code>08H、0CH、04H、06H、02H、03H、01H、09H</code>；老师示例先以 <code>TH1=TL1=9CH</code> 实现 100 μs 中断，再累计 10 次切换一拍，即 1 ms 一拍。T1 中断号为 3，向 P1 输出相序。</p>
+        <pre class="codebox">unsigned char code phase[8] =
+    {0x08,0x0C,0x04,0x06,0x02,0x03,0x01,0x09};
+volatile unsigned char tick = 0, step = 0;
+
+void Initial(void)
+{
+    TMOD = 0x20;                   /* T1 方式 2 */
+    TH1 = 0x9C; TL1 = 0x9C;        /* 100 μs 中断 */
+    P1 = phase[step];
+    ET1 = 1; EA = 1; TR1 = 1;
+}
+
+void t1_isr(void) interrupt 3
+{
+    if (++tick &gt;= 10) {
+        tick = 0;
+        step = (step + 1) % 8;
+        P1 = phase[step];          /* 每 1 ms 换一拍 */
+    }
+}</pre>
+        <p class="exam-caveat">代码使用统一变量名并补出状态初值；这是从评分要点整理的可读版本，不是照片逐字源码。</p>
+      </details>
+    </article>
+
+    <article class="panel exam-question" id="exam-question-4">
+      <div class="exam-question-head"><h3>第四题 · ADC0809 温度测量</h3><span class="tag blue">10 分</span></div>
+      <p>80C51 与 ADC0809 构成 A/D 转换电路，传感器信号从 IN0 输入。传感器输出 0—5 V 与温度 0—1000 ℃ 线性对应；将采集的温度值（℃）保存在变量 <code>F</code>。填写映射地址、外部中断 0 初始化以及“读结果→标度变换→启动下一次转换”的中断程序。</p>
+      <details class="exam-answer"><summary>查看评分思路与规范化程序</summary>
+        <p>老师照片中的一个地址例子为 <code>0x7FF8</code>（地址不唯一，需满足图中的译码条件）。设 <code>F</code> 为已定义的全局浮点变量，按截图的端点换算为 <code>F=D×1000.0/255</code>。</p>
+        <pre class="codebox">#define address 0x7FF8
+
+void Initial(void)
+{
+    IT0 = 1;
+    EA = 1;
+    EX0 = 1;
+    XBYTE[address] = 0;            /* 启动首次 AD 转换 */
+}
+
+void ad(void) interrupt 0
+{
+    F = XBYTE[address];             /* 读取 8 位转换结果 */
+    F = F * 1000.0 / 255;           /* 0—255 对应 0—1000 ℃ */
+    XBYTE[address] = 0;            /* 启动下一次转换 */
+}</pre>
+        <p class="exam-caveat">电路中 ADC 控制线及译码图的细节无法用 OCR 完整复原；地址例子与实际接线须以原理图核对。</p>
+      </details>
+    </article>
+
+    <article class="panel exam-question" id="exam-question-5">
+      <div class="exam-question-head"><h3>第五题 · 编码器脉冲计数及两位显示</h3><span class="tag blue">20 分</span></div>
+      <p>无人驾驶车辆用 80C51 的外部中断 1 对编码器脉冲计数，测量行驶里程，计数范围为 0—99。要求依次写出：① 共阴极数码管七段显示码数组；② INT1 下降沿触发初始化；③ 中断计数，存入整型变量 <code>Number</code>；④ 用两位数码管动态显示 <code>Number</code>。</p>
+      <details class="exam-answer"><summary>查看评分思路与规范化程序</summary>
+        <p>评分照片给出共阴极 0—9 段码；<code>IT1=1; IE=0x84</code> 开边沿触发、总中断和 INT1；ISR 号为 2、计数按 100 取模；P2 选位、P0 输出段码，每位延时 5 ms。</p>
+        <pre class="codebox">unsigned char code table[10] =
+    {0x3F,0x06,0x5B,0x4F,0x66,0x6D,0x7D,0x07,0x7F,0x6F};
+volatile unsigned int Number = 0;
+
+void init(void)
+{
+    IT1 = 1;                       /* INT1 下降沿触发 */
+    IE = 0x84;                     /* EA=1, EX1=1 */
+}
+
+void int1_isr(void) interrupt 2
+{
+    Number++;
+    Number %= 100;
+}
+
+void display(unsigned int value)
+{
+    P2 = 0x7F;                     /* 个位选通 */
+    P0 = table[value % 10];
+    delay_ms(5);
+    P2 = 0xBF;                     /* 十位选通 */
+    P0 = table[value / 10];
+    delay_ms(5);
+}
+
+void main(void)
+{
+    init();
+    while (1) display(Number);
+}</pre>
+        <p class="exam-caveat">照片中 P2.7/P2.6 的位选顺序和 P0 段码已按评分示例转写；若独立接线不同须按实物调整。</p>
+      </details>
+    </article>
+    <div class="panel exam-missing"><strong>原 PDF 第 8 页未提供。</strong>当前只整理了可见题目与评分照片；取得第 8 页或完整 PDF 后再核对缺漏，不猜测剩余内容。</div>
+  </section>
+
+  <div class="footer">离线静态学习站 · 学习记录仅保存在当前浏览器 · 往年试卷按 OCR 文字整理，原卷第 8 页待补</div>
 </div>
 
 <script>

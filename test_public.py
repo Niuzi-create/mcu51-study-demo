@@ -38,6 +38,23 @@ class PublicBankTests(unittest.TestCase):
         for homework in ("作业1", "作业2", "作业3", "作业4", "作业5"):
             self.assertIn(homework, HTML)
 
+    def test_past_exam_ocr_text_order(self):
+        self.assertIn('data-view="past-exam"', HTML)
+        self.assertIn('id="view-past-exam"', HTML)
+        self.assertIn("第 8 页未收到", HTML)
+        marker_positions = [
+            HTML.index(f'id="exam-question-{i}"') for i in range(1, 6)
+        ]
+        self.assertEqual(marker_positions, sorted(marker_positions))
+        for i in range(1, 6):
+            self.assertIn(f'href="#exam-question-{i}"', HTML)
+        for key in ("9600 bit/s", "TH1=FAH", "0x9C", "0x7FF8",
+                    "F = F * 1000.0 / 255", "Number %= 100"):
+            self.assertIn(key, HTML)
+        self.assertNotIn('src="assets/exams/', HTML)
+        self.assertNotIn("<img", HTML)
+        self.assertFalse((Path(__file__).parent / "assets" / "exams").exists())
+
     def test_no_local_paths_or_account_info(self):
         self.assertNotRegex(HTML, r"[A-Za-z]:\\")
         self.assertNotRegex(
